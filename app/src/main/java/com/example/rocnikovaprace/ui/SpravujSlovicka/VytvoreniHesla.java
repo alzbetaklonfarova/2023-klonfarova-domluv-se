@@ -3,6 +3,7 @@ package com.example.rocnikovaprace.ui.SpravujSlovicka;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.RegisterUser;
+import com.example.rocnikovaprace.ui.Zacni.SignInUser;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,7 +29,7 @@ public class VytvoreniHesla extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vytvoreni_hesla);
 
-        register = (TextView) findViewById(R.id.register);
+        register = (Button) findViewById(R.id.register);
         register.setOnClickListener(this);
 
     }
@@ -39,9 +41,12 @@ public class VytvoreniHesla extends AppCompatActivity implements View.OnClickLis
             case R.id.register:
                 startActivity(new Intent(this, RegisterUser.class));
                 break;
+            case R.id.signIn:
+                startActivity(new Intent(this, SignInUser.class));
+                break;
         }
     }
-
+/*
     //Tato metoda se spustí po kliknutí na tlačítko. Uloží  zadané heslo do souboru
     public void UlozHeslo(View view) {
         EditText editText = findViewById(R.id.Heslo);
@@ -68,7 +73,7 @@ public class VytvoreniHesla extends AppCompatActivity implements View.OnClickLis
         startActivity(i);
 
 
-    }
+    }*/
 
 
 }

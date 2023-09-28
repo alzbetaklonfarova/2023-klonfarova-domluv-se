@@ -93,10 +93,25 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+                    mAuth = FirebaseAuth.getInstance();
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                            }else{
+                                Toast.makeText(RegisterUser.this, "Přihlášení selhalo, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+
+
                     startActivity(new Intent(RegisterUser.this, Nastaveni.class));
+
                 }else{
                     Toast.makeText(RegisterUser.this, "Registrace selhala, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
             }
+                progressBar.setVisibility(View.GONE);
             }
         });
 

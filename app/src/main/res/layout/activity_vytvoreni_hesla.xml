@@ -82,123 +82,33 @@
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="30dp"
-                    android:text="@string/zadejte_heslo"
-                    android:textColor="@color/black"
-                    android:textSize="30dp" />
 
-                <EditText
-                    android:id="@+id/Heslo"
+
+
+                <Button
+                    android:id="@+id/register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/heslo"
-                    android:textColor="@color/black"
-                    android:textSize="30dp"
-                    android:inputType="textPassword"
-                    android:ems="10" />
+                    android:text="Registruj se!"
+                    app:layout_constraintBottom_toBottomOf="@+id/forgotPassword"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/forgotPassword" />
 
-            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:paddingLeft="30dp"
-                android:text="@string/instrukce"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                <Button
+                    android:id="@+id/signIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="44dp"
+                    android:text="Přihlaš se!"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/password" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="UlozHeslo"
-                android:paddingLeft="30dp"
-                android:text="@string/hotovo"
-                android:textColor="@color/black"
-                android:textSize="30dp"
-                android:layout_gravity="center_horizontal" />
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:ems="10"
-                android:hint="Password"
-                app:layout_constraintStart_toStartOf="@+id/email"
-                app:layout_constraintTop_toBottomOf="@+id/email" />
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:ems="10"
-                android:hint="Email"
-                app:layout_constraintStart_toStartOf="@+id/DomluvSe"
-                app:layout_constraintTop_toBottomOf="@+id/DomluvSe" />
-
-            <TextView
-                android:id="@+id/forgotPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:text="Forgot password"
-                app:layout_constraintEnd_toStartOf="@+id/register"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signIn" />
-
-            <TextView
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register"
-                app:layout_constraintBottom_toBottomOf="@+id/forgotPassword"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/forgotPassword" />
-
-            <TextView
-                android:id="@+id/DomluvSe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="43dp"
-                android:text="Domluv se!"
-                android:textSize="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.515"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kNicemu" />
-
-            <TextView
-                android:id="@+id/kNicemu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="38dp" />
-
-            <Button
-                android:id="@+id/signIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:text="Log in"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
