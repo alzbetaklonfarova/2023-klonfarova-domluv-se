@@ -98,6 +98,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
+                                startActivity(new Intent(RegisterUser.this, Nastaveni.class));
                             }else{
                                 Toast.makeText(RegisterUser.this, "Přihlášení selhalo, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
                             }
@@ -106,7 +107,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                     });
 
 
-                    startActivity(new Intent(RegisterUser.this, Nastaveni.class));
+
 
                 }else{
                     Toast.makeText(RegisterUser.this, "Registrace selhala, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
