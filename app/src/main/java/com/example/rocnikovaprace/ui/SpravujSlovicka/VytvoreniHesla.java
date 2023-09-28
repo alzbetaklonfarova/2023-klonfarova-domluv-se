@@ -4,18 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.RegisterUser;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-public class VytvoreniHesla extends AppCompatActivity {
+public class VytvoreniHesla extends AppCompatActivity implements View.OnClickListener {
+
+    private TextView register;
 
     //Tato aktivita se spustí jen jednou a to pouze na začátku prvního spuštění aplikace, aby uživatel vytvořil heslo
     @Override
@@ -23,6 +27,19 @@ public class VytvoreniHesla extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vytvoreni_hesla);
 
+        register = (TextView) findViewById(R.id.register);
+        register.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            case R.id.register:
+                startActivity(new Intent(this, RegisterUser.class));
+                break;
+        }
     }
 
     //Tato metoda se spustí po kliknutí na tlačítko. Uloží  zadané heslo do souboru

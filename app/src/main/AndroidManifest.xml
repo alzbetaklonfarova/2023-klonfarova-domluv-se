@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.rocnikovaprace">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,6 +12,13 @@
         android:roundIcon="@mipmap/ikonaaplikace_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RocnikovaPrace">
+        <activity
+            android:name=".RegisterUser"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ui.SpravujSlovicka.VytvoreniHesla"
             android:exported="true"
