@@ -4,10 +4,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.databinding.FragmentSlideshowBinding;
+import com.example.rocnikovaprace.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,9 +47,13 @@ public class Nastaveni extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    TextView mail;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FirebaseAuth mAuth;
 
     public Nastaveni() {
         // Required empty public constructor
@@ -74,7 +100,9 @@ public class Nastaveni extends Fragment {
         } catch (Exception e) {
             System.out.println("Do souboru se nepovedlo zapsat.");
         }
-
+        mail = getView().findViewById(R.id.editheslo);
+        mAuth = FirebaseAuth.getInstance();
+        mail.setText(mAuth.getCurrentUser().getEmail().toString());
 
         return inflater.inflate(R.layout.fragment_nastaveni, container, false);
     }

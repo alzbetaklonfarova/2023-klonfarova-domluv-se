@@ -9,108 +9,82 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <EditText
+    <TextView
         android:id="@+id/editheslo"
         android:layout_width="364dp"
         android:layout_height="wrap_content"
-        android:hint="@string/potvrdte_heslo"
-        android:inputType="textPassword"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editnoveheslo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zmenitHeslo"
-        app:layout_constraintVertical_bias="0.234" />
+        android:layout_marginStart="29dp"
 
-    <EditText
-        android:id="@+id/editnoveheslo"
-        android:layout_width="364dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/nove_heslo"
+        android:layout_marginEnd="217dp"
+        android:hint="E-mail"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintBottom_toTopOf="@+id/zmenitHeslo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editheslo" />
+        app:layout_constraintStart_toEndOf="@+id/soucasne"
+        app:layout_constraintTop_toBottomOf="@+id/Profil"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
-        android:id="@+id/zmenitHeslo"
-        android:layout_width="wrap_content"
+        android:id="@+id/Profil"
+        android:layout_width="729dp"
         android:layout_height="wrap_content"
-        android:text="@string/zmenit_heslo"
-        android:textSize="30dp"
+        android:text="Profil"
+        android:textAlignment="center"
+        android:textSize="50dp"
         app:layout_constraintBottom_toTopOf="@+id/editheslo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/soucasne"
-        android:layout_width="364dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="@string/soucasne_heslo"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="29dp"
+        android:text="E-mail"
         android:textSize="20dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editheslo"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/noveHeslo"
-        android:layout_width="364dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="@string/nove_heslo"
-        android:textSize="20dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editnoveheslo"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="@+id/editheslo"
+        app:layout_constraintEnd_toStartOf="@+id/editheslo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintTop_toTopOf="@+id/editheslo" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editnoveheslo" />
 
     <Button
-        android:id="@+id/zmenit"
+        android:id="@+id/zmenitHeslo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/zmenit"
+        android:layout_marginStart="99dp"
+        android:layout_marginEnd="99dp"
+        android:onClick="NovyUcet"
+        android:text="Nový účet"
+        app:layout_constraintBottom_toBottomOf="@+id/zapomenuteHeslo"
+        app:layout_constraintEnd_toStartOf="@+id/zmenitUcet"
+        app:layout_constraintStart_toEndOf="@+id/zapomenuteHeslo"
+        app:layout_constraintTop_toTopOf="@+id/zapomenuteHeslo"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/zapomenuteHeslo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="72dp"
+        android:onClick="ZapomenutéHeslo"
+        android:text="Zapomenuté heslo"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/zmenitUcet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:onClick="ZmenitUcet"
+        android:text="Změnit účet"
+        app:layout_constraintBottom_toBottomOf="@+id/zmenitHeslo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editnoveheslo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498"
-        android:onClick="ZmenitHeslo" />
+        app:layout_constraintTop_toTopOf="@+id/zmenitHeslo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

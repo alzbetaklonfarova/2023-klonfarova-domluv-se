@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox aktivita = findViewById(R.id.Aktivita);
         String nazev = editText.getText().toString();
 
-// Natsaví soubor podle toho, jestli je to slovicko neebo aktivita
+// Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
         }
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+/*
     public void ZmenitHeslo(View view) {
         String zeSouboru = "";
         File heslosoubor = new File(getApplicationContext().getFilesDir(), "heslo.txt");
@@ -234,7 +234,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }*/
+
+
+    public void ZmenitUcet (View view){
+        startActivity(new Intent(this, UserLogIn.class));
     }
 
-
+    public void NovyUcet (View view){
+        startActivity(new Intent(this, RegisterUser.class));
+    }
 }
