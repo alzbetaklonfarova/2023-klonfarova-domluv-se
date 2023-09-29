@@ -24,6 +24,7 @@ import com.example.rocnikovaprace.databinding.ActivityMainBinding;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     File file;
 
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarMain.toolbar);
+        mAuth = FirebaseAuth.getInstance();
+
+        setSupportActionBar(binding.appBarMain.toolbar);/*
 //Zjistí, jestli je už vytvořené heslo, pokud ne, spustí novou aktivitu
         File heslosoubor = new File(getApplicationContext().getFilesDir(), "heslo.txt");
         String zeSouboru = "";
@@ -62,7 +66,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
 
         }
+*/
 
+        //Zjistí, jestli je uživatel přihlášen
+        if (mAuth.getCurrentUser() == null) {
+            Intent i = new Intent(getApplicationContext(), VytvoreniHesla.class);
+            startActivity(i);
+
+        }
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;

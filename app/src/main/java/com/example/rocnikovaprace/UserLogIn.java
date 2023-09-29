@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.rocnikovaprace.ui.Nastaveni.Nastaveni;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
+import com.example.rocnikovaprace.ui.Zacni.Zacni;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -65,7 +66,11 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-
+        if(password.isEmpty()){
+            editTextPassword.setError("Password is required!");
+            editTextPassword.requestFocus();
+            return;
+        }
 
 
         if(email.isEmpty()){
@@ -80,12 +85,14 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    startActivity(new Intent(UserLogIn.this, Nastaveni.class));
+                    Toast.makeText(UserLogIn.this, "Přihlášení bylo úspěšné", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(UserLogIn.this, MainActivity.class));
 
                 }else{
-                    Toast.makeText(UserLogIn.this, "Registrace selhala, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLogIn.this, "Přihlášení selhalo, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
                 }
                 progressBar.setVisibility(View.GONE);
+
             }
         });
 
