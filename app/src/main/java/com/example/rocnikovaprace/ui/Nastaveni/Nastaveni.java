@@ -46,7 +46,7 @@ public class Nastaveni extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private View rootView;
     TextView mail;
 
     // TODO: Rename and change types of parameters
@@ -91,7 +91,7 @@ public class Nastaveni extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        File file = new File(getContext().getFilesDir(), "cislo.txt");
+        /*File file = new File(getContext().getFilesDir(), "cislo.txt");
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
             bw.write("ano");
             bw.newLine();
@@ -99,13 +99,18 @@ public class Nastaveni extends Fragment {
 
         } catch (Exception e) {
             System.out.println("Do souboru se nepovedlo zapsat.");
-        }
-        mail = getView().findViewById(R.id.editheslo);
+        }*/
+
+
+        LayoutInflater lf = getActivity().getLayoutInflater();
+        View v =  lf.inflate(R.layout.fragment_nastaveni, container, false);
+        mail = v.findViewById(R.id.editheslo);
         mAuth = FirebaseAuth.getInstance();
+
         mail.setText(mAuth.getCurrentUser().getEmail().toString());
 
-        return inflater.inflate(R.layout.fragment_nastaveni, container, false);
-    }
 
+        return v;
+    }
 
 }

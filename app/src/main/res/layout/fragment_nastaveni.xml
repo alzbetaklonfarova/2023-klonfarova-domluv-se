@@ -14,9 +14,8 @@
         android:layout_width="364dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
-
+        android:text="XYZ"
         android:layout_marginEnd="217dp"
-        android:hint="E-mail"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/zmenitHeslo"
         app:layout_constraintEnd_toEndOf="parent"
