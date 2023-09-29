@@ -4,24 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.RegisterUser;
-import com.example.rocnikovaprace.ui.Zacni.SignInUser;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import com.example.rocnikovaprace.UserLogIn;
 
 public class VytvoreniHesla extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView register;
+    private Button register;
+    private Button signIn;
 
     //Tato aktivita se spustí jen jednou a to pouze na začátku prvního spuštění aplikace, aby uživatel vytvořil heslo
     @Override
@@ -32,18 +25,21 @@ public class VytvoreniHesla extends AppCompatActivity implements View.OnClickLis
         register = (Button) findViewById(R.id.register);
         register.setOnClickListener(this);
 
+        signIn = (Button) findViewById(R.id.signIn);
+        signIn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
         switch (view.getId()){
+            case R.id.signIn:
+                startActivity(new Intent(this, UserLogIn.class));
+                break;
             case R.id.register:
                 startActivity(new Intent(this, RegisterUser.class));
                 break;
-            case R.id.signIn:
-                startActivity(new Intent(this, SignInUser.class));
-                break;
+
         }
     }
 /*

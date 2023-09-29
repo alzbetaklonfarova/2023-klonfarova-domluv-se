@@ -1,9 +1,7 @@
-package com.example.rocnikovaprace.ui.Zacni;
+package com.example.rocnikovaprace;
 
-import static android.os.Build.VERSION_CODES.R;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.ui.Nastaveni.Nastaveni;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignInUser extends AppCompatActivity implements View.OnClickListener {
+public class UserLogIn extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private EditText editTextEmail, editTextPassword;
@@ -32,7 +29,7 @@ public class SignInUser extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.rocnikovaprace.R.layout.activity_sign_in_user);
+        setContentView(R.layout.activity_user_log_in);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -47,7 +44,6 @@ public class SignInUser extends AppCompatActivity implements View.OnClickListene
 
 
         progressBar = (ProgressBar) findViewById(com.example.rocnikovaprace.R.id.progressBar);
-
     }
 
     @Override
@@ -84,15 +80,14 @@ public class SignInUser extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    startActivity(new Intent(SignInUser.this, Nastaveni.class));
+                    startActivity(new Intent(UserLogIn.this, Nastaveni.class));
 
                 }else{
-                    Toast.makeText(SignInUser.this, "Registrace selhala, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLogIn.this, "Registrace selhala, zkontrolujte své údaje", Toast.LENGTH_LONG).show();
                 }
                 progressBar.setVisibility(View.GONE);
             }
         });
 
     }
-
 }
