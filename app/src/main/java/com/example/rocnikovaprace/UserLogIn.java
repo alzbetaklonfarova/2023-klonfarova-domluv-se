@@ -25,7 +25,7 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
     private FirebaseAuth mAuth;
     private EditText editTextEmail, editTextPassword;
     private ProgressBar progressBar;
-    private TextView banner, signInUser;
+    private TextView banner, signInUser, zapomenuteHeslo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,9 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
         editTextEmail = (EditText) findViewById(com.example.rocnikovaprace.R.id.email);
         editTextPassword = (EditText) findViewById(com.example.rocnikovaprace.R.id.password);
 
+        zapomenuteHeslo = (TextView) findViewById(com.example.rocnikovaprace.R.id.zapomenuteHeslo);
+        zapomenuteHeslo.setOnClickListener(this);
+
 
         progressBar = (ProgressBar) findViewById(com.example.rocnikovaprace.R.id.progressBar);
     }
@@ -56,10 +59,36 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
             case com.example.rocnikovaprace.R.id.signInUser:
                 signInUser();
                 break;
+            case R.id.zapomenuteHeslo:
+                resetPassword();
 
 
         }
 
+    }
+
+    private void resetPassword(){
+        String email = editTextEmail.getText().toString().trim();
+
+        if(email.isEmpty()){
+            editTextEmail.setError("Email is required!");
+            editTextEmail.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(UserLogIn.this, "Přejděte do své emailové schránky a postupujte podle pokynů v e-mailu.", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }else{
+                    Toast.makeText(UserLogIn.this, "Zaslání emailu selhalo. Zkontrolujte email a zkuste to znovu", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void signInUser(){
