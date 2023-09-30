@@ -58,19 +58,19 @@
         android:layout_marginEnd="99dp"
         android:onClick="NovyUcet"
         android:text="Nový účet"
-        app:layout_constraintBottom_toBottomOf="@+id/zapomenuteHeslo"
+        app:layout_constraintBottom_toBottomOf="@+id/zapomenuteHesloNastaveni"
         app:layout_constraintEnd_toStartOf="@+id/zmenitUcet"
-        app:layout_constraintStart_toEndOf="@+id/zapomenuteHeslo"
-        app:layout_constraintTop_toTopOf="@+id/zapomenuteHeslo"
+        app:layout_constraintStart_toEndOf="@+id/zapomenuteHesloNastaveni"
+        app:layout_constraintTop_toTopOf="@+id/zapomenuteHesloNastaveni"
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
-        android:id="@+id/zapomenuteHeslo"
+        android:id="@+id/zapomenuteHesloNastaveni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginBottom="72dp"
-        android:onClick="ZapomenutéHeslo"
+
         android:text="Zapomenuté heslo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -27,8 +28,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.UserLogIn;
 import com.example.rocnikovaprace.databinding.FragmentSlideshowBinding;
 import com.example.rocnikovaprace.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.BufferedWriter;
@@ -46,7 +50,7 @@ public class Nastaveni extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private View rootView;
+    Button zmena;
     TextView mail;
 
     // TODO: Rename and change types of parameters
@@ -109,7 +113,26 @@ public class Nastaveni extends Fragment {
 
         mail.setText(mAuth.getCurrentUser().getEmail().toString());
 
+        zmena = v.findViewById(R.id.zapomenuteHesloNastaveni);
+        zmena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                mAuth.sendPasswordResetEmail(mAuth.getCurrentUser().getEmail().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getContext(), "Přejděte do své emailové schránky a postupujte podle pokynů v e-mailu.", Toast.LENGTH_LONG).show();
+
+                        }else{
+                            Toast.makeText(getContext(), "Zaslání emailu selhalo. Zkontrolujte email a zkuste to znovu", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+            }
+        });
         return v;
     }
 
