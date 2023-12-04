@@ -1,6 +1,7 @@
 package com.example.rocnikovaprace.ui;
 
 public class SlovickoSnake {
+    //Třída, díky které vytvářím objekty, které následně dávám yaml stringu (teda taková je momentálně myšlenka)
     String nazev;
     String obrazek;
     Boolean jeToSlovicko;

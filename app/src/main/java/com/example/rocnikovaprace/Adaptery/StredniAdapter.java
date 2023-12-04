@@ -1,5 +1,8 @@
 package com.example.rocnikovaprace.Adaptery;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
 
 import java.util.List;
 
@@ -18,7 +22,7 @@ import java.util.List;
 public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
 
 
-    private List<Slovicka> list;
+    private List<SlovickoSnake> list;
 
 
     public static class MyView
@@ -48,7 +52,7 @@ public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
     }
 
     //Další konstruktor
-    public StredniAdapter(List<Slovicka> horizontalList) {
+    public StredniAdapter(List<SlovickoSnake> horizontalList) {
         this.list = horizontalList;
     }
 
@@ -69,13 +73,21 @@ public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
         return new Adapter.MyView(itemView);
     }
 
-
+    //Metoda, která převádí string na bitmapu zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
+    public static Bitmap convertStringToBitmap(String string) {
+        byte[] byteArray1;
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
+                byteArray1.length);/* w  w  w.ja va 2 s  .  c om*/
+        return bmp;
+    }
     @Override
     public void onBindViewHolder(final Adapter.MyView holder,
                                  final int position) {
 
-        holder.textView.setText(list.get(position).slovo);
-        holder.obrazek.setImageBitmap(list.get(position).bitmapa);
+        //Nastaví text a obrázek, každé položce v seznamu
+        holder.textView.setText(list.get(position).getNazev());
+        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).getObrazek()));
 
 
     }

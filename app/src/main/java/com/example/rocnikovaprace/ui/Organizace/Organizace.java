@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.MainActivity;
-import com.example.rocnikovaprace.MalyAdapter;
+import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;

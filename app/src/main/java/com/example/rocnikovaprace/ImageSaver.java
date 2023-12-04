@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-//Třída, která se stará o ukládání obrázků
+//Třída, která se stará o ukládání obrázků (V nové verzi je pravděpodobně k ničemu)
 public class ImageSaver {
 
     private String directoryName = "images";

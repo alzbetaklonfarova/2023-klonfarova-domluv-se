@@ -1,6 +1,5 @@
 package com.example.rocnikovaprace.ui.Zacni;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rocnikovaprace.ImageSaver;
-import com.example.rocnikovaprace.MalyAdapter;
+import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.R;
-import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
+
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,8 +33,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
-    ArrayList<Slovicka> source;
-    ArrayList<Slovicka> source2;
+    ArrayList<SlovickoSnake> source;
+    ArrayList<SlovickoSnake> source2;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerView.LayoutManager RecyclerViewLayoutManager2;
     MalyAdapter adapter;
@@ -138,7 +138,28 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
+        //Tady to musím změnit na čtení yamlu
+
         File file = new File(getContext().getFilesDir(), "slovicka.txt");
+        //Načte slovíčka ze souboru
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String yamlStr;
+            int p = 0;
+            while ((yamlStr = br.readLine()) != null) {
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+
+                //Přidá je do ArrayListu
+                source.add(slovicko);
+                p++;
+            }
+        } catch (Exception e) {
+            System.out.println("Chyba při čtení ze souboru.");
+        }
+            }
+
+        /*File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String s;
@@ -155,7 +176,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         }
 
 
-    }
+    }*/
 
 
     public void AddItemsToRecyclerViewArrayList2() {
@@ -202,7 +223,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             int position = viewHolder.getAdapterPosition();
-            Slovicka slovicka = source2.get(position);
+            SlovickoSnake slovicka = source2.get(position);
             source.add(slovicka);
             source2.remove(position);
             recyclerView2.getAdapter().notifyItemRemoved(position);
