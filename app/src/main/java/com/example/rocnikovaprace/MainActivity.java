@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         byte[] byteArray1;
         byteArray1 = Base64.decode(string, Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
-                byteArray1.length);/* w  w  w.ja va 2 s  .  c om*/
+                byteArray1.length);
         return bmp;
     }
 
@@ -208,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // Tato metoda se spustí po kliknutí na tlačítko uložit
-    /*public void Ulozit(View view) {
+    /*// Tato metoda se spustí po kliknutí na tlačítko uložit
+    public void Ulozit(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
         EditText editText = findViewById(R.id.Slovo);
         CheckBox slovicko = findViewById(R.id.Slovicko);

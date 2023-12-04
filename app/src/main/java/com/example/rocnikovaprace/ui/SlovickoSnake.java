@@ -14,6 +14,7 @@ public class SlovickoSnake {
         this.kategorie = kategorie;
     }
 
+
     public String getNazev() {
         return nazev;
     }

@@ -24,6 +24,9 @@ import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
+
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,14 +41,17 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     private OrganizaceViewModel mViewModel;
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
-    ArrayList<Slovicka> source;
-    ArrayList<Slovicka> source2;
+    ArrayList<SlovickoSnake> source;
+    ArrayList<SlovickoSnake> source2;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerView.LayoutManager RecyclerViewLayoutManager2;
     MalyAdapter adapter;
     StredniAdapter adapter2;
     LinearLayoutManager HorizontalLayout;
     LinearLayoutManager HorizontalLayout2;
+
+     SlovickoSnake s;
+    String yamlStr;
 
     public static Organizace newInstance() {
         return new Organizace();
@@ -58,7 +64,10 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         File file = new File(getContext().getFilesDir(), "rozvrh.txt");
         if (source2.size() > 0) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
-                bw.write(source2.get(0).slovo);
+                SlovickoSnake s = new SlovickoSnake(source2.get(0).getNazev(), source2.get(0).getObrazek(), source2.get(0).getJeToSlovicko(), source2.get(0).getKategorie());
+                Yaml yaml = new Yaml();
+                yamlStr = yaml.dump(s);
+                bw.write(yamlStr);
                 bw.newLine();
                 bw.flush();
                 source2.remove(0);
@@ -71,7 +80,10 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         }
         while (0 < source2.size()) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-                bw.write(source2.get(0).slovo);
+                SlovickoSnake s = new SlovickoSnake(source2.get(0).getNazev(), source2.get(0).getObrazek(), source2.get(0).getJeToSlovicko(), source2.get(0).getKategorie());
+                Yaml yaml = new Yaml();
+                yamlStr = yaml.dump(s);
+                bw.write(yamlStr);
                 bw.newLine();
                 bw.flush();
                 source2.remove(0);
@@ -230,13 +242,15 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         File file = new File(getContext().getFilesDir(), "aktivity.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
+            String yamlStr;
             int p = 0;
-            while ((s = br.readLine()) != null) {
-                Bitmap bitmap = new ImageSaver(getContext()).setFileName(s + ".png").setDirectoryName(file.getName()).load();
-                Slovicka slovo = new Slovicka(s, bitmap);
+            while ((yamlStr = br.readLine()) != null) {
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+
                 //Přidá je do ArrayListu
-                source.add(slovo);
+                source.add(slovicko);
                 p++;
             }
         } catch (Exception e) {
@@ -253,12 +267,16 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         File file2 = new File(getContext().getFilesDir(), "aktivity.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
-            while ((s = br.readLine()) != null) {
-                Bitmap bitmap = new ImageSaver(getContext()).setFileName(s + ".png").setDirectoryName(file2.getName()).load();
-                Slovicka slovo = new Slovicka(s, bitmap);
+            String yamlStr;
+            int p = 0;
+            while ((yamlStr = br.readLine()) != null) {
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+
                 //Přidá je do ArrayListu
-                source2.add(slovo);
+                source2.add(slovicko);
+                p++;
             }
         } catch (Exception e) {
             System.out.println("Chyba při čtení ze souboru.");
@@ -278,7 +296,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Slovicka sl = source.get(position);
+            SlovickoSnake sl = source.get(position);
             source2.add(source.get(position));
             source.remove(position);
             recyclerView.getAdapter().notifyItemRemoved(position);
@@ -306,7 +324,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             int position = viewHolder.getAdapterPosition();
-            Slovicka slovicka = source2.get(position);
+            SlovickoSnake slovicka = source2.get(position);
             //source.add(slovicka);
             source2.remove(position);
             recyclerView2.getAdapter().notifyItemRemoved(position);

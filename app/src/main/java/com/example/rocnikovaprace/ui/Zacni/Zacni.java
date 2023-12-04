@@ -138,8 +138,6 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        //Tady to musím změnit na čtení yamlu
-
         File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {

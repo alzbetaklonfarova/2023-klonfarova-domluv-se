@@ -27,7 +27,10 @@ import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.databinding.FragmentGalleryBinding;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -49,7 +52,7 @@ public class SpravujSlovicka extends Fragment {
     String storagePermission[];
     ImageButton imageButton;
     RecyclerView recyclerView;
-    ArrayList<Slovicka> source;
+    ArrayList<SlovickoSnake> source;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     Adapter adapter;
     LinearLayoutManager HorizontalLayout;
@@ -129,8 +132,8 @@ public class SpravujSlovicka extends Fragment {
 
         // Přidá položky do seznamu
         AddItemsToRecyclerViewArrayList();
-
-        // Zavolá konstruktor
+//?????
+      /*  // Zavolá konstruktor
         RecyclerViewClickInterface inter = new RecyclerViewClickInterface() {
             @Override
             public void setClick(int abc) {
@@ -160,7 +163,7 @@ public class SpravujSlovicka extends Fragment {
                         = customLayout
                         .findViewById(
                                 R.id.Slovonove);
-                editText.setHint(source.get(abc).slovo.toString());
+                editText.setHint(source.get(abc).getNazev());
 
 
                 builder.setView(customLayout);
@@ -178,7 +181,7 @@ public class SpravujSlovicka extends Fragment {
                                 //Prohlídne všechna slovíčka a pokud, už takové slovíčko existuje, upozorní na to uživatele
                                 int p = 0;
                                 while (p < source.size()) {
-                                    if (editText.getText().toString().equals(source.get(p).slovo.toString()) && p != abc) {
+                                    if (editText.getText().toString().equals(source.get(p).getNazev()) && p != abc) {
                                         AlertDialog dialog2 = new AlertDialog.Builder(getContext())
                                                 .setMessage(getString(R.string.vyzva1))
                                                 .setPositiveButton("ok", null)
@@ -223,7 +226,7 @@ public class SpravujSlovicka extends Fragment {
 
             }
         };
-        adapter = new Adapter(source, getContext(), inter);
+        adapter = new Adapter(source, getContext(), inter);*/
 
         // Nastaví Horizontal Layout Manager pro Recycler view
         HorizontalLayout
@@ -294,13 +297,15 @@ public class SpravujSlovicka extends Fragment {
         File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Nejdřív je načte ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
+            String yamlStr;
             int p = 0;
-            while ((s = br.readLine()) != null) {
-                Bitmap bitmap = new ImageSaver(getContext()).setFileName(s + ".png").setDirectoryName(file.getName()).load();
-                Slovicka slovo = new Slovicka(s, bitmap);
-                //Potom je přidá do ArrayListu
-                source.add(slovo);
+            while ((yamlStr = br.readLine()) != null) {
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+
+                //Přidá je do ArrayListu
+                source.add(slovicko);
                 p++;
             }
         } catch (Exception e) {
@@ -329,18 +334,16 @@ public class SpravujSlovicka extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             int position = viewHolder.getAdapterPosition();
-            nazevslova = source.get(position).toString();
+            SlovickoSnake a = source.get(position);
             source.remove(position);
             recyclerView.getAdapter().notifyItemRemoved(position);
             //Vytvoří SnacBar s tlačítkem zpět, které umožňuje vrátit smazanou položku zpět
-            Snackbar.make(recyclerView, nazevslova, Snackbar.LENGTH_LONG)
+            Snackbar.make(recyclerView, a.getNazev(), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.zpet), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             File file = new File(getContext().getFilesDir(), "slovicka.txt");
-                            Bitmap bitmap2 = new ImageSaver(getContext()).setFileName(nazevslova + ".png").setDirectoryName(file.getName()).load();
-                            Slovicka slovo = new Slovicka(nazevslova, bitmap2);
-                            source.add(position, slovo);
+                            source.add(position, a);
                             recyclerView.getAdapter().notifyItemInserted(position);
 
 

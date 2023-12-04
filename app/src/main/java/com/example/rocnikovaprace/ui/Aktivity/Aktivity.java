@@ -17,7 +17,10 @@ import com.example.rocnikovaprace.Adaptery.Adapter;
 import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.RecyclerViewClickInterface;
+
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +34,7 @@ public class Aktivity extends Fragment {
 
 
     RecyclerView recyclerView;
-    ArrayList<Slovicka> source;
+    ArrayList<SlovickoSnake> source;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     Adapter adapter;
     LinearLayoutManager HorizontalLayout;
@@ -108,13 +111,15 @@ public class Aktivity extends Fragment {
         File file2 = new File(getContext().getFilesDir(), "aktivity.txt");
         //Nejdřív je načte ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
+            String yamlStr;
             int p = 0;
-            while ((s = br.readLine()) != null) {
-                Bitmap bitmap = new ImageSaver(getContext()).setFileName(s + ".png").setDirectoryName(file2.getName()).load();
-                Slovicka slovo = new Slovicka(s, bitmap);
-                //Potom je přidá do ArrayListu
-                source.add(slovo);
+            while ((yamlStr = br.readLine()) != null) {
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+
+                //Přidá je do ArrayListu
+                source.add(slovicko);
                 p++;
             }
         } catch (Exception e) {
