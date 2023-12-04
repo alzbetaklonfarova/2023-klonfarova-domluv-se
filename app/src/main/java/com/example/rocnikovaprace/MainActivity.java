@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
@@ -189,8 +190,13 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        Yaml yaml1 = new Yaml();
+        System.out.println(s.toString());
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+        options.setPrettyFlow(false);
+        Yaml yaml1 = new Yaml(options);
         String yamlStr = yaml1.dump(s);
+        System.out.println(yamlStr);
 
         //Uloží yaml string slovíčka nabo aktivity
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {

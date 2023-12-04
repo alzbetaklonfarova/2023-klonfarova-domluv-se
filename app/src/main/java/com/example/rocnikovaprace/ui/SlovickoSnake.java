@@ -16,6 +16,15 @@ public class SlovickoSnake implements Serializable {
         this.kategorie = kategorie;
     }
 
+    @Override
+    public String toString() {
+        return "SlovickoSnake{" +
+                "nazev='" + nazev + '\'' +
+                ", obrazek='" + obrazek + '\'' +
+                ", jeToSlovicko=" + jeToSlovicko +
+                ", kategorie='" + kategorie + '\'' +
+                '}';
+    }
 
     public String getNazev() {
         return nazev;

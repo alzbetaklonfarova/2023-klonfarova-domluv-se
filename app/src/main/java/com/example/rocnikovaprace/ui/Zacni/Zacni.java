@@ -18,7 +18,9 @@ import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -144,12 +146,19 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
             String yamlStr;
             int p = 0;
             while ((yamlStr = br.readLine()) != null) {
-                Yaml yaml1 = new Yaml();
-                SlovickoSnake slovicko = yaml1.loadAs(yamlStr, SlovickoSnake.class);
+                DumperOptions options = new DumperOptions();
+                options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+                options.setPrettyFlow(false);
+                Yaml yaml1 = new Yaml(options);
+                Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class));
+                SlovickoSnake slovicko = yaml2.loadAs(yamlStr, SlovickoSnake.class);
+                SlovickoSnake slovicko2 = yaml1.loadAs(yamlStr, SlovickoSnake.class);
+                SlovickoSnake slovickoSnake = yaml2.load(yamlStr);
 
 
                 //Přidá je do ArrayListu
-                source.add(slovicko);
+                source.add(slovickoSnake);
+                source.add(slovicko2);
                 p++;
             }
         } catch (Exception e) {
