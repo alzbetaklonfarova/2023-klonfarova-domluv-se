@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import java.io.ByteArrayOutputStream;
 
+import android.graphics.Bitmap;
+
+import android.util.Base64;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +25,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.rocnikovaprace.databinding.ActivityMainBinding;
+import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -120,8 +127,79 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Tato metoda se spustí po kliknutí na tlačítko uložit
+    public static String convertBitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return result;
+    }
+
+    // Tato metoda se spustí po kliknutí na tlačítko uložit a pomocí yamlu uloží slovíčko, nebo aktivitu
     public void Ulozit(View view) {
+        ImageButton imageButton = findViewById(R.id.imageButton);
+        EditText editText = findViewById(R.id.Slovo);
+        CheckBox slovicko = findViewById(R.id.Slovicko);
+        CheckBox aktivita = findViewById(R.id.Aktivita);
+        String nazev = editText.getText().toString();
+        boolean jeToSlovicko = true;
+        String kategorie = null;
+        String obrazek;
+
+        //Vezme obrázek z tlačítka a převede ho do stringu
+        BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        obrazek = convertBitmapToString(bitmap);
+
+// Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
+        if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
+            jeToSlovicko = true;
+            file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
+        }
+
+        if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
+            jeToSlovicko = false;
+            file = new File(getApplicationContext().getFilesDir(), "aktivity.txt");
+        }
+//Ošetřuje chybu, nejde vytvořit slovíčko i aktivitu zároveň
+        if (aktivita.isChecked() == true && slovicko.isChecked() == true) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.vyzva3))
+                    .setPositiveButton("ok", null)
+                    .show();
+            return;
+        }
+// Ošetřuje chybu. Uživatel musí zadat, jestli je to slovíčko, nebo aktivita
+        if (aktivita.isChecked() == false && slovicko.isChecked() == false) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(getString(R.string.vyzva3))
+                    .setPositiveButton("ok", null)
+                    .show();
+            return;
+        }
+       //Udělá z objektu yaml
+        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
+        Yaml yaml = new Yaml();
+        String yamlStr = yaml.dump(s);
+
+        //Uloží yaml string slovíčka nabo aktivity
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+            bw.write(yamlStr);
+            bw.newLine();
+            bw.flush();
+            imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);
+            imageButton.setImageResource(R.drawable.kliknutimvloziteobrazek);
+            editText.setText("");
+            aktivita.setChecked(false);
+            slovicko.setChecked(false);
+
+        } catch (Exception e) {
+            editText.setText("Do souboru se nepovedlo zapsat.");
+        }
+
+    }
+    // Tato metoda se spustí po kliknutí na tlačítko uložit
+    /*public void Ulozit(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
         EditText editText = findViewById(R.id.Slovo);
         CheckBox slovicko = findViewById(R.id.Slovicko);
@@ -194,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 /*
     public void ZmenitHeslo(View view) {
         String zeSouboru = "";
