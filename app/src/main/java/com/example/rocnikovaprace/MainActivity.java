@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        Yaml yaml = new Yaml();
-        String yamlStr = yaml.dump(s);
+        Yaml yaml1 = new Yaml();
+        String yamlStr = yaml1.dump(s);
 
         //Uloží yaml string slovíčka nabo aktivity
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {

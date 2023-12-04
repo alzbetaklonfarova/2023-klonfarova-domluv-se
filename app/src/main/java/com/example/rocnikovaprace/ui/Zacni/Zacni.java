@@ -144,8 +144,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
             String yamlStr;
             int p = 0;
             while ((yamlStr = br.readLine()) != null) {
-                Yaml yaml = new Yaml();
-                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+                Yaml yaml1 = new Yaml();
+                SlovickoSnake slovicko = yaml1.loadAs(yamlStr, SlovickoSnake.class);
 
 
                 //Přidá je do ArrayListu
