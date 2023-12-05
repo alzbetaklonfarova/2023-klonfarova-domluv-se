@@ -1,6 +1,8 @@
 package com.example.rocnikovaprace.ui.Zacni;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.Adaptery.MalyAdapter;
+import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
@@ -23,6 +26,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -135,7 +139,14 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         super.onDestroyView();
         binding = null;
     }
-
+    //Metoda, která převádí bitmapu na string zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
+    public static String convertBitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return result;
+    }
 
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
@@ -143,6 +154,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
             String yamlStr;
             int p = 0;
             while ((yamlStr = br.readLine()) != null) {
@@ -150,15 +162,14 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                 options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
                 options.setPrettyFlow(false);
                 Yaml yaml1 = new Yaml(options);
-                Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class));
-                SlovickoSnake slovicko = yaml2.loadAs(yamlStr, SlovickoSnake.class);
-                SlovickoSnake slovicko2 = yaml1.loadAs(yamlStr, SlovickoSnake.class);
-                SlovickoSnake slovickoSnake = yaml2.load(yamlStr);
+                Yaml yaml = new Yaml();
+                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
 
 
                 //Přidá je do ArrayListu
-                source.add(slovickoSnake);
-                source.add(slovicko2);
+                source.add(slovicko);
+
+
                 p++;
             }
         } catch (Exception e) {

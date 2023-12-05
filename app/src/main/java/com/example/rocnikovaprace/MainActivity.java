@@ -134,13 +134,13 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
-        String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        String result = Base64.encodeToString(byteArray, Base64.URL_SAFE);
         return result;
     }
     //Metoda, která převádí string na bitmapu zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
     public static Bitmap convertStringToBitmap(String string) {
         byte[] byteArray1;
-        byteArray1 = Base64.decode(string, Base64.DEFAULT);
+        byteArray1 = Base64.decode(string, Base64.URL_SAFE);
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
                 byteArray1.length);
         return bmp;
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         obrazek = convertBitmapToString(bitmap);
+
+
 
 // Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
@@ -208,6 +210,13 @@ public class MainActivity extends AppCompatActivity {
             editText.setText("");
             aktivita.setChecked(false);
             slovicko.setChecked(false);
+//nemělo by tu být
+            BitmapDrawable drawable2 = (BitmapDrawable) imageButton.getDrawable();
+            Bitmap bitmap2 = drawable2.getBitmap();
+            new ImageSaver(this).
+                    setFileName(nazev + ".png").
+                    setDirectoryName(file.getName()).
+                    save(bitmap2);
 
         } catch (Exception e) {
             editText.setText("Do souboru se nepovedlo zapsat.");
