@@ -29,8 +29,10 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
@@ -142,7 +144,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Metoda, která převádí bitmapu na string zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
     public static String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return result;
@@ -154,24 +156,38 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-
-            String yamlStr;
+            DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
+            options.setPrettyFlow(false);
+            Yaml yaml1 = new Yaml(options);
+           /* Asi k nicemu  String yamlStr;
             int p = 0;
-            while ((yamlStr = br.readLine()) != null) {
-                DumperOptions options = new DumperOptions();
-                options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
-                options.setPrettyFlow(false);
-                Yaml yaml1 = new Yaml(options);
-                Yaml yaml = new Yaml();
-                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+            while ((yamlStr = yaml1.load() != null) {
 
+                InputStream inputStream = this.getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(String.valueOf(file));*/
 
-                //Přidá je do ArrayListu
-                source.add(slovicko);
+            Iterable<Object> pokus = yaml1.loadAll(br);
+            Iterator<Object> iterator = pokus.iterator();
 
-
-                p++;
+            while (iterator.hasNext()) {
+                Object element = iterator.next();
+                //přidá do Arraylistu
+                source.add((SlovickoSnake) element);;
             }
+
+
+               // Asi k nicemu
+            // SlovickoSnake slovicko = yaml1.loadAs(yamlStr, SlovickoSnake.class);
+
+
+
+
+
+
+
+
         } catch (Exception e) {
             System.out.println("Chyba při čtení ze souboru.");
         }
