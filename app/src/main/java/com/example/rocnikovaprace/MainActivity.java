@@ -167,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
 // Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             jeToSlovicko = true;
-            file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
+            file = new File(getApplicationContext().getFilesDir(), "slovicka.yaml");
         }
 
         if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
             jeToSlovicko = false;
-            file = new File(getApplicationContext().getFilesDir(), "aktivity.txt");
+            file = new File(getApplicationContext().getFilesDir(), "aktivity.yaml");
         }
 //Ošetřuje chybu, nejde vytvořit slovíčko i aktivitu zároveň
         if (aktivita.isChecked() == true && slovicko.isChecked() == true) {
@@ -192,31 +192,29 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        //System.out.println(s.toString());
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
-        options.setPrettyFlow(false);
-        Yaml yaml1 = new Yaml(options);
+        Yaml yaml1 = new Yaml();
         String yamlStr = yaml1.dump(s);
-        System.out.println(yamlStr);
+
 
         //Uloží yaml string slovíčka nabo aktivity
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             bw.write(yamlStr);
-            bw.newLine();
+            bw.write("---\n");
+            //bw.newLine();
             bw.flush();
             imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);
             imageButton.setImageResource(R.drawable.kliknutimvloziteobrazek);
             editText.setText("");
             aktivita.setChecked(false);
             slovicko.setChecked(false);
-//nemělo by tu být
+/*//nemělo by tu být
             BitmapDrawable drawable2 = (BitmapDrawable) imageButton.getDrawable();
             Bitmap bitmap2 = drawable2.getBitmap();
             new ImageSaver(this).
                     setFileName(nazev + ".png").
                     setDirectoryName(file.getName()).
-                    save(bitmap2);
+                    save(bitmap2);*/
 
         } catch (Exception e) {
             editText.setText("Do souboru se nepovedlo zapsat.");

@@ -24,12 +24,16 @@ import com.example.rocnikovaprace.ui.SlovickoSnake;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -92,6 +96,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
         // Zavolá konstruktor
         adapter = new MalyAdapter(source);
+        source.size();
         adapter2 = new StredniAdapter(source2);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
@@ -141,25 +146,28 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         super.onDestroyView();
         binding = null;
     }
-    //Metoda, která převádí bitmapu na string zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
-    public static String convertBitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        return result;
-    }
 
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
-        source = new ArrayList<>();
-        File file = new File(getContext().getFilesDir(), "slovicka.txt");
+        source = new ArrayList<SlovickoSnake>();
+        File file = new File(getContext().getFilesDir(), "slovicka.yaml");
+
         //Načte slovíčka ze souboru
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            DumperOptions options = new DumperOptions();
-            options.setDefaultFlowStyle(DumperOptions.FlowStyle.FLOW);
-            options.setPrettyFlow(false);
-            Yaml yaml1 = new Yaml(options);
+
+            Yaml yaml = new Yaml();
+            //try (InputStream in = Files.newInputStream(Paths.get(file.getCanonicalPath()))) {
+                try (InputStream in = new FileInputStream(file)) {
+                Iterable<Object> itr = yaml.loadAll(in);
+                for (Object o : itr) {
+                    System.out.println(o);
+                    SlovickoSnake s = (SlovickoSnake) o;
+                    source.add(s);
+                }
+            }
+
+
+            Yaml yaml1 = new Yaml();
            /* Asi k nicemu  String yamlStr;
             int p = 0;
             while ((yamlStr = yaml1.load() != null) {
@@ -168,14 +176,14 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                         .getClassLoader()
                         .getResourceAsStream(String.valueOf(file));*/
 
-            Iterable<Object> pokus = yaml1.loadAll(br);
+            /*Iterable<Object> pokus = yaml1.loadAll(br);
             Iterator<Object> iterator = pokus.iterator();
 
             while (iterator.hasNext()) {
                 Object element = iterator.next();
                 //přidá do Arraylistu
-                source.add((SlovickoSnake) element);;
-            }
+                source.add((SlovickoSnake) element);
+            }*/
 
 
                // Asi k nicemu
