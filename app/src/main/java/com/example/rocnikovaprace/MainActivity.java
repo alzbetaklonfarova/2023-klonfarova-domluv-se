@@ -192,7 +192,11 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        Yaml yaml1 = new Yaml();
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        options.setPrettyFlow(true);
+
+        Yaml yaml1 = new Yaml(options);
         String yamlStr = yaml1.dump(s);
 
 
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             bw.write(yamlStr);
-            bw.write("---\n");
+            bw.write("---/n");
             //bw.newLine();
             bw.flush();
             imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);

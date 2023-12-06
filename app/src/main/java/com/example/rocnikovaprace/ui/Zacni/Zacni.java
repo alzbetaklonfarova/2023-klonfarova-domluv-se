@@ -162,7 +162,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                 for (Object o : itr) {
                     System.out.println(o);
                     SlovickoSnake s = (SlovickoSnake) o;
-                    source.add(s);
+                    source.add((SlovickoSnake) o);
                 }
             }
 
