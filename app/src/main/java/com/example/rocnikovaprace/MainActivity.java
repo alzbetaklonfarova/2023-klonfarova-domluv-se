@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         options.setPrettyFlow(true);
 
-        Yaml yaml1 = new Yaml(options);
+        Yaml yaml1 = new Yaml();
         String yamlStr = yaml1.dump(s);
 
 
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             bw.write(yamlStr);
-            bw.write("---/n");
+            bw.write("\n---\n");
             //bw.newLine();
             bw.flush();
             imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);

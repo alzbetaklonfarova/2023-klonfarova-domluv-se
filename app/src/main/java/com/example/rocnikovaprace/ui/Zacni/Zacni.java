@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -152,85 +153,38 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<SlovickoSnake>();
         File file = new File(getContext().getFilesDir(), "slovicka.yaml");
-
         //Načte slovíčka ze souboru
-
-
-            Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
-            InputStream inputStream = this.getClass()
-                    .getClassLoader()
-                    .getResourceAsStream(file.getName());
+        Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+        try {
+            InputStream inputStream = new FileInputStream(file);
 
             int count = 0;
             for (Object object : yaml.loadAll(inputStream)) {
                 count++;
                 source.add((SlovickoSnake) object);
             }
-
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
-          /*  //try (InputStream in = Files.newInputStream(Paths.get(file.getCanonicalPath()))) {
-                try (InputStream in = new FileInputStream(file)) {
-                Iterable<Object> itr = yaml.loadAll(in);
-                for (Object o : itr) {
-                    System.out.println(o);
-                    SlovickoSnake s = (SlovickoSnake) o;
-                    source.add((SlovickoSnake) o);
-                }
-            }*/
+    }
 
+/*//Načte slovíčka ze souboru
+        Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+        InputStream inputStream = this.getClass()
+                .getClassLoader()
+                .getResourceAsStream("slovicka.yaml");
 
-            Yaml yaml1 = new Yaml();
-           /* Asi k nicemu  String yamlStr;
-            int p = 0;
-            while ((yamlStr = yaml1.load() != null) {
-
-                InputStream inputStream = this.getClass()
-                        .getClassLoader()
-                        .getResourceAsStream(String.valueOf(file));*/
-
-            /*Iterable<Object> pokus = yaml1.loadAll(br);
-            Iterator<Object> iterator = pokus.iterator();
-
-            while (iterator.hasNext()) {
-                Object element = iterator.next();
-                //přidá do Arraylistu
-                source.add((SlovickoSnake) element);
-            }*/
-
-
-               // Asi k nicemu
-            // SlovickoSnake slovicko = yaml1.loadAs(yamlStr, SlovickoSnake.class);
+        int count = 0;
+        for (Object object : yaml.loadAll(inputStream)) {
+            count++;
+            source.add((SlovickoSnake) object);
+        }*/
 
 
 
 
 
-
-
-
-
-
-
-
-        /*File file = new File(getContext().getFilesDir(), "slovicka.txt");
-        //Načte slovíčka ze souboru
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
-            int p = 0;
-            while ((s = br.readLine()) != null) {
-                Bitmap bitmap = new ImageSaver(getContext()).setFileName(s + ".png").setDirectoryName(file.getName()).load();
-                Slovicka slovo = new Slovicka(s, bitmap);
-                //Přidá je do ArrayListu
-                source.add(slovo);
-                p++;
-            }
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
-        }
-
-
-    }*/
 
 
     public void AddItemsToRecyclerViewArrayList2() {
@@ -289,4 +243,3 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
 
 }
-
