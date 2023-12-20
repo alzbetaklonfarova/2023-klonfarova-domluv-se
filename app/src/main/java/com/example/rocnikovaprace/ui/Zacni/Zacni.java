@@ -22,6 +22,7 @@ import com.example.rocnikovaprace.Adaptery.StredniAdapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
@@ -153,10 +154,22 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         File file = new File(getContext().getFilesDir(), "slovicka.yaml");
 
         //Načte slovíčka ze souboru
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-            Yaml yaml = new Yaml();
-            //try (InputStream in = Files.newInputStream(Paths.get(file.getCanonicalPath()))) {
+
+            Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+            InputStream inputStream = this.getClass()
+                    .getClassLoader()
+                    .getResourceAsStream(file.getName());
+
+            int count = 0;
+            for (Object object : yaml.loadAll(inputStream)) {
+                count++;
+                source.add((SlovickoSnake) object);
+            }
+
+        }
+
+          /*  //try (InputStream in = Files.newInputStream(Paths.get(file.getCanonicalPath()))) {
                 try (InputStream in = new FileInputStream(file)) {
                 Iterable<Object> itr = yaml.loadAll(in);
                 for (Object o : itr) {
@@ -164,7 +177,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                     SlovickoSnake s = (SlovickoSnake) o;
                     source.add((SlovickoSnake) o);
                 }
-            }
+            }*/
 
 
             Yaml yaml1 = new Yaml();
@@ -196,10 +209,9 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
 
 
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
-        }
-            }
+
+
+
 
         /*File file = new File(getContext().getFilesDir(), "slovicka.txt");
         //Načte slovíčka ze souboru
