@@ -36,12 +36,14 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.StringWriter;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -192,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        DumperOptions options = new DumperOptions();
+        /*DumperOptions options = new DumperOptions();
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        options.setPrettyFlow(true);
+        options.setPrettyFlow(true);*/
 
         Yaml yaml1 = new Yaml();
         String yamlStr = yaml1.dump(s);
@@ -203,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
         //Uloží yaml string slovíčka nabo aktivity
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+            //yaml1.dump(s,bw);
             bw.write(yamlStr);
             bw.write("\n---\n");
             //bw.newLine();

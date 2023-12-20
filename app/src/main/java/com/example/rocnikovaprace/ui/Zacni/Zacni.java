@@ -161,7 +161,11 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
             int count = 0;
             for (Object object : yaml.loadAll(inputStream)) {
                 count++;
-                source.add((SlovickoSnake) object);
+                if (object instanceof SlovickoSnake) {
+                    source.add((SlovickoSnake) object);
+                } else {
+                    System.err.println("Nepodařilo se načíst objekt třídy SlovickoSnake.");
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
