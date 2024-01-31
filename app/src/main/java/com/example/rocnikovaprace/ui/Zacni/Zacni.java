@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -152,8 +153,33 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<SlovickoSnake>();
-        File file = new File(getContext().getFilesDir(), "slovicka.yaml");
-        //Načte slovíčka ze souboru
+        File file = new File(getContext().getFilesDir(), "slovicka.txt");
+
+//Načte slovíčka ze souboru
+        Yaml yaml2 = new Yaml();
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String s;
+            int p = 0;
+            String line;
+            String yamlStr2 = "";
+            while ((line = br.readLine()) != null) {
+
+                if (line.equals("---")) {
+                    // Zpracovani YAML retezce
+                    SlovickoSnake sl = yaml2.load(yamlStr2);
+                    source.add(sl);
+                    yamlStr2 = "";
+                }else {yamlStr2 = yamlStr2 + line+ "\n";}
+            }
+            br.close();
+        } catch (IOException e) {
+            System.out.println("Chyba pri praci se souborem: " + e.getMessage());
+        }
+    }
+
+
+
+      /*//Načte slovíčka ze souboru
         Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         try {
             InputStream inputStream = new FileInputStream(file);
@@ -169,9 +195,9 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
-    }
+
 
 /*//Načte slovíčka ze souboru
         Yaml yaml = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));

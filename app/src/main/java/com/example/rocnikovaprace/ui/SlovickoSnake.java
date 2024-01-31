@@ -9,23 +9,15 @@ public class SlovickoSnake implements Serializable {
     Boolean jeToSlovicko;
     String kategorie;
 
-    public SlovickoSnake (String nazev, String obrazek, Boolean jeToSlovicko, String kategorie) {
+    public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie) {
         this.nazev = nazev;
         this.obrazek = obrazek;
         this.jeToSlovicko = jeToSlovicko;
         this.kategorie = kategorie;
     }
 
-    @Override
-    public String toString() {
-        return "SlovickoSnake{" +
-                "nazev='" + nazev + '\'' +
-                ", obrazek='" + obrazek + '\'' +
-                ", jeToSlovicko=" + jeToSlovicko +
-                ", kategorie='" + kategorie + '\'' +
-                '}';
+    public SlovickoSnake() {
     }
-
     public String getNazev() {
         return nazev;
     }

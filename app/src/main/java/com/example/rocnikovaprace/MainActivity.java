@@ -35,7 +35,9 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.BufferedReader;
@@ -43,6 +45,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 
@@ -169,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 // Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             jeToSlovicko = true;
-            file = new File(getApplicationContext().getFilesDir(), "slovicka.yaml");
+            file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
         }
 
         if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
@@ -194,12 +199,11 @@ public class MainActivity extends AppCompatActivity {
         }
        //Udělá z objektu yaml
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
-        /*DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        options.setPrettyFlow(true);*/
 
-        Yaml yaml1 = new Yaml();
-        String yamlStr = yaml1.dump(s);
+        Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+        String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);
+        Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+        SlovickoSnake sl2 = yaml2.load(yamlStr);
 
 
         //Uloží yaml string slovíčka nabo aktivity
