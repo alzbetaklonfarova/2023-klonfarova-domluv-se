@@ -89,8 +89,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
     public void onBindViewHolder(final MyView holder, @SuppressLint("RecyclerView") final int position) {
 
         //Nastaví text a obrázek, každé položce v seznamu
-        holder.textView.setText(list.get(position).getNazev());
-        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).getObrazek()));
+        holder.textView.setText(list.get(position).nazev);
+        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).obrazek));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

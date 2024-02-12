@@ -78,7 +78,7 @@ public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
         byte[] byteArray1;
         byteArray1 = Base64.decode(string, Base64.URL_SAFE);
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
-                byteArray1.length);/* w  w  w.ja va 2 s  .  c om*/
+                byteArray1.length);
         return bmp;
     }
     @Override
@@ -86,8 +86,8 @@ public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
                                  final int position) {
 
         //Nastaví text a obrázek, každé položce v seznamu
-        holder.textView.setText(list.get(position).getNazev());
-        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).getObrazek()));
+        holder.textView.setText(list.get(position).nazev);
+        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).nazev));
 
 
     }

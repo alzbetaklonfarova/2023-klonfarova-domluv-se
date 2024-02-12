@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class SlovickoSnake implements Serializable {
     //Třída, díky které vytvářím objekty, které následně dávám yaml stringu (teda taková je momentálně myšlenka)
-    String nazev;
-    String obrazek;
-    Boolean jeToSlovicko;
-    String kategorie;
+    public String nazev;
+    public String obrazek;
+    public Boolean jeToSlovicko;
+    public String kategorie;
 
     public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie) {
         this.nazev = nazev;

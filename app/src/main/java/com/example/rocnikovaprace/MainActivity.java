@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,6 +17,8 @@ import java.io.ByteArrayOutputStream;
 import android.graphics.Bitmap;
 
 import android.util.Base64;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +33,12 @@ import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -55,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private DatabaseReference kartickyRef;
+
     File file;
 
     private FirebaseAuth mAuth;
@@ -65,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+
 
         setSupportActionBar(binding.appBarMain.toolbar);/*
 //Zjistí, jestli je už vytvořené heslo, pokud ne, spustí novou aktivitu
@@ -141,16 +153,21 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
-        String result = Base64.encodeToString(byteArray, Base64.URL_SAFE);
+        String result = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return result;
     }
     //Metoda, která převádí string na bitmapu zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
     public static Bitmap convertStringToBitmap(String string) {
         byte[] byteArray1;
-        byteArray1 = Base64.decode(string, Base64.URL_SAFE);
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
                 byteArray1.length);
         return bmp;
+    }
+
+
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+        Log.e("TAG", "Error reading book data");
     }
 
     // Tato metoda se spustí po kliknutí na tlačítko uložit a pomocí yamlu uloží slovíčko, nebo aktivitu
@@ -202,6 +219,34 @@ public class MainActivity extends AppCompatActivity {
 
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);
+
+//ukládá objekt, neboli slovíčko do Firebase databáze
+
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String kartickaId = kartickyRef.push().getKey();
+
+
+
+            kartickyRef.child(kartickaId).setValue(s)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "úspěšně zapsáno do databáze");
+                        } else {
+                            Log.e("TAG", "do databáze se nepovedlo zapsat");
+                        }
+                    });
+
+        } else {
+            // User is not signed in
+        }
+
+
+
+
         Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         SlovickoSnake sl2 = yaml2.load(yamlStr);
 

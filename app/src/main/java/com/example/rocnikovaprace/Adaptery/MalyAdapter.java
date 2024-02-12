@@ -76,7 +76,7 @@ public class MalyAdapter extends RecyclerView.Adapter<Adapter.MyView> {
     //Metoda, která převádí string na bitmapu zdroj:http://www.java2s.com/example/android/graphics/convert-bitmap-to-string.html
     public static Bitmap convertStringToBitmap(String string) {
         byte[] byteArray1;
-        byteArray1 = Base64.decode(string, Base64.URL_SAFE);
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
                 byteArray1.length);/* w  w  w.ja va 2 s  .  c om*/
         return bmp;
@@ -87,8 +87,8 @@ public class MalyAdapter extends RecyclerView.Adapter<Adapter.MyView> {
                                  final int position) {
 
         //Nastaví text a obrázek, každé položce v seznamu
-        holder.textView.setText(list.get(position).getNazev());
-        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).getObrazek()));
+        holder.textView.setText(list.get(position).nazev);
+        holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).obrazek));
 
     }
 

@@ -3,6 +3,7 @@ package com.example.rocnikovaprace.ui.Zacni;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,13 @@ import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -45,7 +53,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
     private ZacniViewModel zacniViewModel;
     private @NonNull FragmentHomeBinding binding;
-
+    private FirebaseAuth mAuth;
+    private DatabaseReference kartickyRef;
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
     ArrayList<SlovickoSnake> source;
@@ -99,7 +108,6 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
         // Zavolá konstruktor
         adapter = new MalyAdapter(source);
-        source.size();
         adapter2 = new StredniAdapter(source2);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
@@ -133,6 +141,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         recyclerView.setAdapter(adapter);
         recyclerView2.setAdapter(adapter2);
 
+        adapter.notifyDataSetChanged();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -152,30 +161,48 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
-        source = new ArrayList<SlovickoSnake>();
-        File file = new File(getContext().getFilesDir(), "slovicka.txt");
+        source = new ArrayList<>();
+        //File file = new File(getContext().getFilesDir(), "slovicka.txt");
 
-//Načte slovíčka ze souboru
-        Yaml yaml2 = new Yaml();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String s;
-            int p = 0;
-            String line;
-            String yamlStr2 = "";
-            while ((line = br.readLine()) != null) {
+//Načte slovíčka z databáze
+        mAuth = FirebaseAuth.getInstance();
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-                if (line.equals("---")) {
-                    // Zpracovani YAML retezce
-                    SlovickoSnake sl = yaml2.load(yamlStr2);
-                    source.add(sl);
-                    yamlStr2 = "";
-                }else {yamlStr2 = yamlStr2 + line+ "\n";}
-            }
-            br.close();
-        } catch (IOException e) {
-            System.out.println("Chyba pri praci se souborem: " + e.getMessage());
+        if (currentUser != null) {
+
+
+            kartickyRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot bookSnapshot : dataSnapshot.getChildren()) {
+                        SlovickoSnake sl = bookSnapshot.getValue(SlovickoSnake.class);
+                        if (sl != null) {
+                            String nazev = sl.nazev;
+                            String obrazek = sl.obrazek;
+                            Boolean jeToSlovicko = sl.jeToSlovicko;
+                            String kategorie = sl.kategorie;
+                            source.add(sl);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("TAG", "Error reading data");
+                }
+            });
+
+
+        } else {
+            // User is not signed in
         }
+
+
     }
+
+
+
 
 
 

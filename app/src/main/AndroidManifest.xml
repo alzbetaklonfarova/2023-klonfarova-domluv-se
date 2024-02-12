@@ -19,9 +19,11 @@
         android:theme="@style/Theme.RocnikovaPrace">
         <activity
             android:name=".UserLogIn"
+
             android:exported="false" />
         <activity
             android:name=".RegisterUser"
+
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
