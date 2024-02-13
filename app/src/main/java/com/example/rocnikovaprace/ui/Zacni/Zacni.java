@@ -1,6 +1,7 @@
 package com.example.rocnikovaprace.ui.Zacni;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -182,6 +183,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             String kategorie = sl.kategorie;
+                            Bitmap b = convertStringToBitmap(obrazek);
                             source.add(sl);
                         }
                     }
@@ -298,5 +300,11 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         }
     };
 
-
+    public static Bitmap convertStringToBitmap(String string) {
+        byte[] byteArray1;
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
+                byteArray1.length);
+        return bmp;
+    }
 }
