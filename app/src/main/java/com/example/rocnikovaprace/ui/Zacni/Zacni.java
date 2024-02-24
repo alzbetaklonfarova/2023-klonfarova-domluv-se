@@ -10,21 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rocnikovaprace.Adaptery.Adapter;
 import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
-import com.example.rocnikovaprace.ui.SpravujSlovicka.RecyclerViewClickInterface;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -61,7 +58,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     private DatabaseReference kartickyRef;
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
-    ArrayList<SlovickoSnake> source = new ArrayList<>();
+    ArrayList<SlovickoSnake> source;
     ArrayList<SlovickoSnake> source2;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerView.LayoutManager RecyclerViewLayoutManager2;
@@ -145,7 +142,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         recyclerView.setAdapter(adapter);
         recyclerView2.setAdapter(adapter2);
 
-        //adapter.notifyDataSetChanged();
+
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -165,7 +162,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
-
+        source = new ArrayList<>();
         //File file = new File(getContext().getFilesDir(), "slovicka.txt");
 
 //Načte slovíčka z databáze
@@ -179,9 +176,6 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
             kartickyRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    source = new ArrayList<>();
-                    System.out.println("onDataChange " + dataSnapshot.getChildrenCount());
                     for (DataSnapshot bookSnapshot : dataSnapshot.getChildren()) {
                         SlovickoSnake sl = bookSnapshot.getValue(SlovickoSnake.class);
                         if (sl != null) {
@@ -193,6 +187,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                             source.add(sl);
                         }
                     }
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override

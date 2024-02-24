@@ -19,7 +19,7 @@ import com.example.rocnikovaprace.ui.SlovickoSnake;
 
 import java.util.List;
 
-public class MalyAdapter extends RecyclerView.Adapter<MalyAdapter.MyView> {
+public class MalyAdapter extends RecyclerView.Adapter<Adapter.MyView> {
 
     private List<SlovickoSnake> list;
 
@@ -60,7 +60,7 @@ public class MalyAdapter extends RecyclerView.Adapter<MalyAdapter.MyView> {
 
 
     @Override
-    public MyView onCreateViewHolder(ViewGroup parent,
+    public Adapter.MyView onCreateViewHolder(ViewGroup parent,
                                              int viewType) {
 
         // Přiřazení rozložení a vzhledu položky v recyclerView
@@ -70,7 +70,7 @@ public class MalyAdapter extends RecyclerView.Adapter<MalyAdapter.MyView> {
                 .inflate(R.layout.malyitem,
                         parent,
                         false);
-        return new MyView(itemView);
+        return new Adapter.MyView(itemView);
     }
 
     public static Bitmap convertStringToBitmap(String string) {
@@ -81,7 +81,7 @@ public class MalyAdapter extends RecyclerView.Adapter<MalyAdapter.MyView> {
         return bmp;
     }
     @Override
-    public void onBindViewHolder(final MyView holder,
+    public void onBindViewHolder(final Adapter.MyView holder,
                                  final int position) {
 
         //Nastaví text a obrázek, každé položce v seznamu

@@ -1,35 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/activity_vytvoreni_hesla.xml" value="0.1" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/aktivity_fragment.xml" value="0.20652173913043478" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/app_bar_main.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/content_main.xml" value="0.20697463768115942" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_gallery.xml" value="0.24094202898550723" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_home.xml" value="0.24094202898550723" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_nastaveni.xml" value="0.2078804347826087" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_slideshow.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_vkladani.xml" value="0.21331521739130435" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/fragment_vloz_slovo.xml" value="0.21331521739130435" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/heslodialog.xml" value="0.21331521739130435" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/item.xml" value="0.24010416666666667" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/layoutzmen.xml" value="0.18795289855072464" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/malyitem.xml" value="0.21331521739130435" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/nastaveni_fragment.xml" value="0.18795289855072464" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/nav_header_main.xml" value="0.2078804347826087" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/organizace_fragment.xml" value="0.2078804347826087" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/layout/stredniitem.xml" value="0.23369565217391305" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Bibi/AndroidStudioProjects/RocnikovaPrace/app/src/main/res/menu/main.xml" value="0.25416666666666665" />
-      </map>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" default="true">
     <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
   </component>
 </project>
