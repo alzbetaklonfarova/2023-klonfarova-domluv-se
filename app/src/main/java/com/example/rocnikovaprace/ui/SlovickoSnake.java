@@ -8,16 +8,16 @@ public class SlovickoSnake implements Serializable {
     public String obrazek;
     public Boolean jeToSlovicko;
     public String kategorie;
+    public int poradi;
 
-    public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie) {
+    public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie, int poradi) {
         this.nazev = nazev;
         this.obrazek = obrazek;
         this.jeToSlovicko = jeToSlovicko;
         this.kategorie = kategorie;
+        this.poradi = poradi;
     }
 
-    public SlovickoSnake() {
-    }
     public String getNazev() {
         return nazev;
     }
@@ -49,4 +49,15 @@ public class SlovickoSnake implements Serializable {
     public void setKategorie(String kategorie) {
         this.kategorie = kategorie;
     }
-}
+
+    public int getPoradi() {
+        return poradi;
+    }
+
+    public void setPoradi(int poradi) {
+        this.poradi = poradi;
+    }
+
+    public SlovickoSnake() {
+    }}
+

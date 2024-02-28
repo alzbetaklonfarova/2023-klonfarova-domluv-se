@@ -31,14 +31,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.rocnikovaprace.databinding.ActivityMainBinding;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -57,6 +60,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -157,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tato metoda se spustí po kliknutí na tlačítko uložit a uloží slovíčko, nebo aktivitu do Firebase databáze
-    public void Ulozit(View view) {
-        ImageButton imageButton = findViewById(R.id.imageButton);
+    public void Ulozit(View view) throws InterruptedException {
+
+                ImageButton imageButton = findViewById(R.id.imageButton);
         EditText editText = findViewById(R.id.Slovo);
         CheckBox slovicko = findViewById(R.id.Slovicko);
         CheckBox aktivita = findViewById(R.id.Aktivita);
@@ -166,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         boolean jeToSlovicko = true;
         String kategorie = null;
         String obrazek;
+        String strRef ="";
 
         //Vezme obrázek z tlačítka a převede ho do stringu
         BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
@@ -177,11 +185,13 @@ public class MainActivity extends AppCompatActivity {
 // Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             jeToSlovicko = true;
+            strRef = "karticky";
 
         }
 
         if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
             jeToSlovicko = false;
+            strRef = "aktivity";
 
         }
 //Ošetřuje chybu, nejde vytvořit slovíčko i aktivitu zároveň
@@ -201,14 +211,17 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
+        int poradi = 1;
+        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie, poradi);
         /*   //Udělá z objektu yaml
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);*/
 
 //ukládá objekt, neboli slovíčko do Firebase databáze
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+
+
+        kartickyRef = FirebaseDatabase.getInstance().getReference(strRef);
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -250,4 +263,10 @@ public class MainActivity extends AppCompatActivity {
     public void NovyUcet (View view){
         startActivity(new Intent(this, RegisterUser.class));
     }
+
+    public void spocitejPolozky(DatabaseReference reference){
+
+
+    }
+
 }

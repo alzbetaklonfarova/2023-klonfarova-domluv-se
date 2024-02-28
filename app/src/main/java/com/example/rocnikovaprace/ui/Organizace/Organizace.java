@@ -61,7 +61,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     public void onDestroyView() {
         super.onDestroyView();
 
-        File file = new File(getContext().getFilesDir(), "rozvrh.txt");
+       /* File file = new File(getContext().getFilesDir(), "rozvrh.txt");
         if (source2.size() > 0) {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
                 SlovickoSnake s = new SlovickoSnake(source2.get(0).getNazev(), source2.get(0).getObrazek(), source2.get(0).getJeToSlovicko(), source2.get(0).getKategorie());
@@ -92,7 +92,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
             } catch (Exception e) {
                 System.out.println("Do souboru se nepovedlo zapsat.");
             }
-        }
+        }*/
     }
 
 

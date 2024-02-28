@@ -121,7 +121,7 @@ public class Aktivity extends Fragment {
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("aktivity");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
