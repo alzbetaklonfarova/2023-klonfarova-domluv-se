@@ -54,7 +54,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SpravujSlovicka extends Fragment implements MalyAdapter.onNoteListener {
+public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener {
 
     private SpravujSlovickaModel spravujSlovickaModel;
     private @NonNull FragmentGalleryBinding binding;
@@ -69,7 +69,7 @@ public class SpravujSlovicka extends Fragment implements MalyAdapter.onNoteListe
     RecyclerView recyclerView;
     ArrayList<SlovickoSnake> source;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
-    MalyAdapter adapter;
+    Adapter adapter;
     LinearLayoutManager HorizontalLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -149,8 +149,14 @@ public class SpravujSlovicka extends Fragment implements MalyAdapter.onNoteListe
                 RecyclerViewLayoutManager);
 
 
+        // Zavolá konstruktor
+        RecyclerViewClickInterface inter = new RecyclerViewClickInterface() {
+            @Override
+            public void setClick(int abc) {
 
-        adapter = new MalyAdapter(source);
+            }
+        };
+        adapter = new Adapter(source, getContext(), inter);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
         HorizontalLayout
