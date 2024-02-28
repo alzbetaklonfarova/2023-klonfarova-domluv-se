@@ -185,7 +185,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             String kategorie = sl.kategorie;
                             Bitmap b = convertStringToBitmap(obrazek);
-                            source.add(sl);
+                            if(jeToSlovicko == true){
+                            source.add(sl);}
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -201,6 +202,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         } else {
             // User is not signed in
         }
+
 
 
     }

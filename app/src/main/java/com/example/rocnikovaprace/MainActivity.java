@@ -79,22 +79,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        setSupportActionBar(binding.appBarMain.toolbar);/*
-//Zjistí, jestli je už vytvořené heslo, pokud ne, spustí novou aktivitu
-        File heslosoubor = new File(getApplicationContext().getFilesDir(), "heslo.txt");
-        String zeSouboru = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
-            zeSouboru = br.readLine();
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
-        }
+        setSupportActionBar(binding.appBarMain.toolbar);
 
-        if (zeSouboru.equals("")) {
-            Intent i = new Intent(getApplicationContext(), VytvoreniHesla.class);
-            startActivity(i);
-
-        }
-*/
 
         //Zjistí, jestli je uživatel přihlášen
         if (mAuth.getCurrentUser() == null) {
@@ -170,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("TAG", "Error reading book data");
     }
 
-    // Tato metoda se spustí po kliknutí na tlačítko uložit a pomocí yamlu uloží slovíčko, nebo aktivitu
+    // Tato metoda se spustí po kliknutí na tlačítko uložit a uloží slovíčko, nebo aktivitu do Firebase databáze
     public void Ulozit(View view) {
         ImageButton imageButton = findViewById(R.id.imageButton);
         EditText editText = findViewById(R.id.Slovo);
@@ -191,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
 // Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             jeToSlovicko = true;
-            file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
+
         }
 
         if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
             jeToSlovicko = false;
-            file = new File(getApplicationContext().getFilesDir(), "aktivity.yaml");
+
         }
 //Ošetřuje chybu, nejde vytvořit slovíčko i aktivitu zároveň
         if (aktivita.isChecked() == true && slovicko.isChecked() == true) {
@@ -214,11 +200,11 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             return;
         }
-       //Udělá z objektu yaml
-        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
 
+        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie);
+        /*   //Udělá z objektu yaml
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
-        String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);
+        String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);*/
 
 //ukládá objekt, neboli slovíčko do Firebase databáze
 
@@ -244,154 +230,17 @@ public class MainActivity extends AppCompatActivity {
             // User is not signed in
         }
 
+        editText.setText("");
+        aktivita.setChecked(false);
+        slovicko.setChecked(false);
 
 
+        /*Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
+        SlovickoSnake sl2 = yaml2.load(yamlStr);*/
 
-        Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
-        SlovickoSnake sl2 = yaml2.load(yamlStr);
 
-
-        //Uloží yaml string slovíčka nabo aktivity
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-            //yaml1.dump(s,bw);
-            bw.write(yamlStr);
-            bw.write("\n---\n");
-            //bw.newLine();
-            bw.flush();
-            imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);
-            imageButton.setImageResource(R.drawable.kliknutimvloziteobrazek);
-            editText.setText("");
-            aktivita.setChecked(false);
-            slovicko.setChecked(false);
-/*//nemělo by tu být
-            BitmapDrawable drawable2 = (BitmapDrawable) imageButton.getDrawable();
-            Bitmap bitmap2 = drawable2.getBitmap();
-            new ImageSaver(this).
-                    setFileName(nazev + ".png").
-                    setDirectoryName(file.getName()).
-                    save(bitmap2);*/
-
-        } catch (Exception e) {
-            editText.setText("Do souboru se nepovedlo zapsat.");
-        }
 
     }
-    /*// Tato metoda se spustí po kliknutí na tlačítko uložit
-    public void Ulozit(View view) {
-        ImageButton imageButton = findViewById(R.id.imageButton);
-        EditText editText = findViewById(R.id.Slovo);
-        CheckBox slovicko = findViewById(R.id.Slovicko);
-        CheckBox aktivita = findViewById(R.id.Aktivita);
-        String nazev = editText.getText().toString();
-
-// Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
-        if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
-            file = new File(getApplicationContext().getFilesDir(), "slovicka.txt");
-        }
-
-        if (aktivita.isChecked() == true && slovicko.isChecked() == false) {
-            file = new File(getApplicationContext().getFilesDir(), "aktivity.txt");
-        }
-//Ošetřuje chybu, nejde vytvořit slovíčko i aktivitu zároveň
-        if (aktivita.isChecked() == true && slovicko.isChecked() == true) {
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.vyzva3))
-                    .setPositiveButton("ok", null)
-                    .show();
-            return;
-        }
-
-// Ošetřuje chybu. Uživatel musí zadat, jestli je to slovíčko, nebo aktivita
-        if (aktivita.isChecked() == false && slovicko.isChecked() == false) {
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.vyzva3))
-                    .setPositiveButton("ok", null)
-                    .show();
-            return;
-        }
-//Prohlídne všechna slovíčka a pokud, už takové slovíčko existuje, upozorní na to uživatele
-        String zeSouboru;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            while ((zeSouboru = br.readLine()) != null) {
-                if (nazev.equals(zeSouboru)) {
-                    AlertDialog dialog = new AlertDialog.Builder(this)
-                            .setMessage(getString(R.string.vyzva4))
-                            .setPositiveButton("ok", null)
-                            .show();
-                    return;
-                }
-
-            }
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
-        }
-
-
-//Vezme obrázek z tlačítka a uložího ho
-        BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        new ImageSaver(this).
-                setFileName(nazev + ".png").
-                setDirectoryName(file.getName()).
-                save(bitmap);
-//Uloží název slovíčka nabo aktivity
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-            bw.write(nazev);
-            bw.newLine();
-            bw.flush();
-            imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);
-            imageButton.setImageResource(R.drawable.kliknutimvloziteobrazek);
-            editText.setText("");
-            aktivita.setChecked(false);
-            slovicko.setChecked(false);
-
-        } catch (Exception e) {
-            editText.setText("Do souboru se nepovedlo zapsat.");
-        }
-
-
-    }*/
-/*
-    public void ZmenitHeslo(View view) {
-        String zeSouboru = "";
-        File heslosoubor = new File(getApplicationContext().getFilesDir(), "heslo.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
-            zeSouboru = br.readLine();
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
-        }
-
-
-        EditText editText2 = findViewById(R.id.editheslo);
-        if (zeSouboru.equals(editText2.getText().toString())) {
-
-            EditText editText = findViewById(R.id.editnoveheslo);
-            //Zapíše heslo do souboru
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(heslosoubor, false))) {
-                bw.write(editText.getText().toString());
-                bw.newLine();
-                bw.flush();
-                editText.setText("");
-                editText2.setText("");
-
-                Snackbar.make(getCurrentFocus(), getString(R.string.heslosezmenilo), Snackbar.LENGTH_LONG).show();
-
-
-            } catch (Exception e) {
-                editText.setText("Do souboru se nepovedlo zapsat.");
-            }
-        } else {
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.nespravne_heslo))
-                    .setPositiveButton("ok", null)
-                    .show();
-            return;
-
-
-        }
-
-    }*/
 
 
     public void ZmenitUcet (View view){

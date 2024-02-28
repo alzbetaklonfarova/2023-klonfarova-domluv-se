@@ -238,7 +238,8 @@ public class SpravujSlovicka extends Fragment implements MalyAdapter.onNoteListe
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             String kategorie = sl.kategorie;
                             Bitmap b = convertStringToBitmap(obrazek);
-                            source.add(sl);
+                            if(jeToSlovicko == true){
+                                source.add(sl);}
                         }
                     }
                     adapter.notifyDataSetChanged();
