@@ -76,6 +76,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         View root = binding.getRoot();
+
+        AddItemsToRecyclerViewArrayList();
         recyclerView
                 = (RecyclerView) root.findViewById(
                 R.id.recyclerview3);
@@ -104,7 +106,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                 RecyclerViewLayoutManager2);
 
         // Přidá položka do ArrayListu
-        AddItemsToRecyclerViewArrayList();
+
         AddItemsToRecyclerViewArrayList2();
 
         // Zavolá konstruktor
@@ -163,9 +165,8 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        //File file = new File(getContext().getFilesDir(), "slovicka.txt");
 
-//Načte slovíčka z databáze
+        //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
         kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
         FirebaseUser currentUser = mAuth.getCurrentUser();

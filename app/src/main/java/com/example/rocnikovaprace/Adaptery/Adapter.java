@@ -24,6 +24,8 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
 
     private List<SlovickoSnake> list;
+    public interface onNoteListener {
+    }
     RecyclerViewClickInterface recyclerViewClickInterface;
     Context context;
 

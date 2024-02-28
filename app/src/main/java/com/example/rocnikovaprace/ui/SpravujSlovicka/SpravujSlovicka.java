@@ -3,9 +3,12 @@ package com.example.rocnikovaprace.ui.SpravujSlovicka;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.Adaptery.Adapter;
+import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
@@ -29,6 +33,15 @@ import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.databinding.FragmentGalleryBinding;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.database.DatabaseReference;
+
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -41,7 +54,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SpravujSlovicka extends Fragment {
+public class SpravujSlovicka extends Fragment implements MalyAdapter.onNoteListener {
 
     private SpravujSlovickaModel spravujSlovickaModel;
     private @NonNull FragmentGalleryBinding binding;
@@ -51,10 +64,12 @@ public class SpravujSlovicka extends Fragment {
     String cameraPermission[];
     String storagePermission[];
     ImageButton imageButton;
+    private FirebaseAuth mAuth;
+    private DatabaseReference kartickyRef;
     RecyclerView recyclerView;
     ArrayList<SlovickoSnake> source;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
-    Adapter adapter;
+    MalyAdapter adapter;
     LinearLayoutManager HorizontalLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,6 +80,9 @@ public class SpravujSlovicka extends Fragment {
                 new ViewModelProvider(this).get(SpravujSlovickaModel.class);
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // Přidá položky do seznamu
+        AddItemsToRecyclerViewArrayList();
 
 
         // Vytvoří dialog pro zadání hesla, bez kterého se nedá vstoupit do tohoto fragmentu
@@ -130,103 +148,9 @@ public class SpravujSlovicka extends Fragment {
         recyclerView.setLayoutManager(
                 RecyclerViewLayoutManager);
 
-        // Přidá položky do seznamu
-        AddItemsToRecyclerViewArrayList();
-//?????
-      /*  // Zavolá konstruktor
-        RecyclerViewClickInterface inter = new RecyclerViewClickInterface() {
-            @Override
-            public void setClick(int abc) {
 
 
-                AlertDialog.Builder builder
-                        = new AlertDialog.Builder(getContext());
-
-                File heslosoubor = new File(getContext().getFilesDir(), "zkouska.txt");
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(heslosoubor, false))) {
-                    bw.write("ne");
-                    bw.newLine();
-                    bw.flush();
-
-                } catch (Exception e) {
-                    System.out.println("Do souboru se nepovedlo zapsat.");
-                }
-
-                // Nastaví vzhled dialogu
-                final View customLayout
-                        = getLayoutInflater()
-                        .inflate(
-                                R.layout.layoutzmen,
-                                null);
-
-                EditText editText
-                        = customLayout
-                        .findViewById(
-                                R.id.Slovonove);
-                editText.setHint(source.get(abc).getNazev());
-
-
-                builder.setView(customLayout);
-                builder.setCancelable(true);
-                builder.setPositiveButton(
-                        getString(R.string.ulozit_zmeny),
-                        new DialogInterface.OnClickListener() {
-
-                            //Ověří správnost hesla
-                            @RequiresApi(api = Build.VERSION_CODES.S)
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialog,
-                                    int which) {
-                                //Prohlídne všechna slovíčka a pokud, už takové slovíčko existuje, upozorní na to uživatele
-                                int p = 0;
-                                while (p < source.size()) {
-                                    if (editText.getText().toString().equals(source.get(p).getNazev()) && p != abc) {
-                                        AlertDialog dialog2 = new AlertDialog.Builder(getContext())
-                                                .setMessage(getString(R.string.vyzva1))
-                                                .setPositiveButton("ok", null)
-                                                .show();
-                                        return;
-                                    }
-                                    p++;
-                                }
-                                // Pokud uživatel nezadal název slovíčka, vytvoří dialog, který ho na to upozorní
-                                if (editText.getText() == null || editText.getText().toString().equals("")) {
-                                    AlertDialog dialog2 = new AlertDialog.Builder(getContext())
-                                            .setMessage(getString(R.string.vyzva2))
-                                            .setPositiveButton("ok", null)
-                                            .show();
-                                    return;
-
-                                }
-
-                                BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
-                                Bitmap bitmapa = drawable.getBitmap();
-                                Slovicka sl = new Slovicka(editText.getText().toString(), bitmapa);
-                                source.set(abc, sl);
-                                adapter.notifyItemChanged(abc);
-                                File file = new File(getContext().getFilesDir(), "slovicka.txt");
-                                BitmapDrawable drawable2 = (BitmapDrawable) imageButton.getDrawable();
-                                Bitmap bitmap = drawable.getBitmap();
-                                new ImageSaver(getContext()).
-                                        setFileName(source.get(abc).slovo + ".png").
-                                        setDirectoryName(file.getName()).
-                                        save(bitmap);
-
-
-                            }
-                        });
-
-
-                // Zobrazí dialog
-                AlertDialog dialog
-                        = builder.create();
-                dialog.show();
-
-
-            }
-        };
-        adapter = new Adapter(source, getContext(), inter);*/
+        adapter = new MalyAdapter(source);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
         HorizontalLayout
@@ -294,25 +218,42 @@ public class SpravujSlovicka extends Fragment {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        File file = new File(getContext().getFilesDir(), "slovicka.txt");
-        //Nejdřív je načte ze souboru
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String yamlStr;
-            int p = 0;
-            while ((yamlStr = br.readLine()) != null) {
-                Yaml yaml = new Yaml();
-                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+        //Načte slovíčka z databáze
+        mAuth = FirebaseAuth.getInstance();
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
 
 
-                //Přidá je do ArrayListu
-                source.add(slovicko);
-                p++;
-            }
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
+            kartickyRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot bookSnapshot : dataSnapshot.getChildren()) {
+                        SlovickoSnake sl = bookSnapshot.getValue(SlovickoSnake.class);
+                        if (sl != null) {
+                            String nazev = sl.nazev;
+                            String obrazek = sl.obrazek;
+                            Boolean jeToSlovicko = sl.jeToSlovicko;
+                            String kategorie = sl.kategorie;
+                            Bitmap b = convertStringToBitmap(obrazek);
+                            source.add(sl);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("TAG", "Error reading data");
+                }
+            });
+
+
+        } else {
+            // User is not signed in
         }
-
-
     }
 
 
@@ -354,5 +295,11 @@ public class SpravujSlovicka extends Fragment {
         }
     };
 
-
+    public static Bitmap convertStringToBitmap(String string) {
+        byte[] byteArray1;
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
+                byteArray1.length);
+        return bmp;
+    }
 }
