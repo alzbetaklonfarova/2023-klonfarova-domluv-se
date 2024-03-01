@@ -2,6 +2,7 @@ package com.example.rocnikovaprace.Adaptery;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.Adaptery.Adapter;
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.SeznamKategorii;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 
 import java.util.List;
@@ -87,6 +90,11 @@ public class MalyAdapter extends RecyclerView.Adapter<Adapter.MyView> {
         //Nastaví text a obrázek, každé položce v seznamu
         holder.textView.setText(list.get(position).nazev);
         holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).obrazek));
+
+        Kategorie kategorie = SeznamKategorii.podleNazvu(list.get(position).kategorie);
+        if (kategorie != null) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor(kategorie.getBarva()));
+        }
 
     }
 

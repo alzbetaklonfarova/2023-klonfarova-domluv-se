@@ -187,36 +187,44 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        int i = 0;
-        File file = new File(getContext().getFilesDir(), "slovicka.txt");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("karticky");
 
-        try {
-            FileWriter fw = new FileWriter(file, false);
-            PrintWriter pw = new PrintWriter(fw, false);
-            pw.flush();
-            pw.close();
-            fw.close();
-        } catch (Exception exception) {
-
-            System.out.println("Chyba v mazání");
-
-        }
-
-        while (i < source.size()) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-                bw.write(source.get(i).toString());
-                bw.newLine();
-                bw.flush();
-
-
-            } catch (Exception e) {
-                System.out.println("Do souboru se nepovedlo zapsat.");
+        reference.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error == null) {
+                    System.out.println("Data byla úspěšně smazána.");
+                } else {
+                    System.err.println("Chyba při mazání dat: " + error.getMessage());
+                }
             }
+        });
 
-            i++;
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
 
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            int i = 0;
+            while (i < source.size()){
+
+                String kartickaId = kartickyRef.push().getKey();
+
+
+
+                kartickyRef.child(kartickaId).setValue(source.get(i))
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("TAG", "úspěšně zapsáno do databáze");
+                            } else {
+                                Log.e("TAG", "do databáze se nepovedlo zapsat");
+                            }
+                        }); i++;
+            }
+        } else {
+            // User is not signed in
         }
-
 
         binding = null;
     }

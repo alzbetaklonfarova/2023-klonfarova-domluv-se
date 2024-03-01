@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 
 public abstract class SeznamKategorii {
     private static List<Kategorie> seznam = Arrays.asList(
-            new Kategorie("Jídlo", "#c41d1d"),
-            new Kategorie("Sport", "#1d2bc4"),
-            new Kategorie("Ovoce", "#5dc41d")
+            new Kategorie("Místa", "#FFFF00"), //žlutá
+            new Kategorie("Lidé", "#FFA500"),  //oranžová
+            new Kategorie("Věci", "#c41d1d"),  //červená
+            new Kategorie("Činnosti", "#1d2bc4"), //modrá
+            new Kategorie("Jídlo", "#5dc41d"), //zelená
+            new Kategorie("Hračky", "#FF00FF") //fialová
     );
 
     public static List<Kategorie> komplet() {

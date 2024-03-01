@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.RecyclerViewClickInterface;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Aktivity extends Fragment {
 
@@ -121,7 +124,7 @@ public class Aktivity extends Fragment {
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("aktivity");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -164,5 +167,40 @@ public class Aktivity extends Fragment {
                 byteArray1.length);
         return bmp;
     }
+
+    //Umožňuje přesouvat položky v RecycleView
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        //Po přetáhnutí nahoru, nebo dolu smaže položku ze seznamu
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//FIX: Někam sem musím přidat, aby položku smazal z databáze
+            int position = viewHolder.getAdapterPosition();
+            SlovickoSnake a = source.get(position);
+            source.remove(position);
+            recyclerView.getAdapter().notifyItemRemoved(position);
+            //Vytvoří SnacBar s tlačítkem zpět, které umožňuje vrátit smazanou položku zpět
+            Snackbar.make(recyclerView, a.getNazev(), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.zpet), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //File file = new File(getContext().getFilesDir(), "slovicka.txt");
+                            source.add(position, a);
+
+                            recyclerView.getAdapter().notifyItemInserted(position);
+
+
+                        }
+                    }).show();
+
+
+        }
+    };
+
+
 
 }

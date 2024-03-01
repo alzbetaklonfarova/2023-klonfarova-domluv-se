@@ -2,6 +2,7 @@ package com.example.rocnikovaprace.Adaptery;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.SeznamKategorii;
 import com.example.rocnikovaprace.Slovicka;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 
 import java.util.List;
@@ -89,6 +92,10 @@ public class StredniAdapter extends RecyclerView.Adapter<Adapter.MyView> {
         holder.textView.setText(list.get(position).nazev);
         holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).obrazek));
 
+        Kategorie kategorie = SeznamKategorii.podleNazvu(list.get(position).kategorie);
+        if (kategorie != null) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor(kategorie.getBarva()));
+        }
 
     }
 

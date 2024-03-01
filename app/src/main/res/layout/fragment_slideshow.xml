@@ -41,11 +41,11 @@
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/Ulozit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
             <CheckBox
                 android:id="@+id/Aktivita"
@@ -86,10 +86,13 @@
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="304dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="124dp" />
+                app:layout_constraintBottom_toTopOf="@+id/Slovo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Aktivita" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

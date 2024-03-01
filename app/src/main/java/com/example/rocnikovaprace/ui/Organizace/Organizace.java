@@ -3,7 +3,10 @@ package com.example.rocnikovaprace.ui.Organizace;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,13 @@ import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -50,6 +60,9 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     LinearLayoutManager HorizontalLayout;
     LinearLayoutManager HorizontalLayout2;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference kartickyRef;
+
      SlovickoSnake s;
     String yamlStr;
 
@@ -60,6 +73,46 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("rozvrh");
+
+        reference.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, DatabaseReference ref) {
+                if (error == null) {
+                    System.out.println("Data byla úspěšně smazána.");
+                } else {
+                    System.err.println("Chyba při mazání dat: " + error.getMessage());
+                }
+            }
+        });
+
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            int i = 0;
+            while (i < source.size()){
+
+                String kartickaId = kartickyRef.push().getKey();
+
+
+
+                kartickyRef.child(kartickaId).setValue(source2.get(i))
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("TAG", "úspěšně zapsáno do databáze");
+                            } else {
+                                Log.e("TAG", "do databáze se nepovedlo zapsat");
+                            }
+                        }); i++;
+            }
+        } else {
+            // User is not signed in
+        }
+
 
        /* File file = new File(getContext().getFilesDir(), "rozvrh.txt");
         if (source2.size() > 0) {
@@ -239,47 +292,85 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        File file = new File(getContext().getFilesDir(), "aktivity.txt");
-        //Načte slovíčka ze souboru
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String yamlStr;
-            int p = 0;
-            while ((yamlStr = br.readLine()) != null) {
-                Yaml yaml = new Yaml();
-                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+        //Načte slovíčka z databáze
+        mAuth = FirebaseAuth.getInstance();
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
 
 
-                //Přidá je do ArrayListu
-                source.add(slovicko);
-                p++;
-            }
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
+            kartickyRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot bookSnapshot : dataSnapshot.getChildren()) {
+                        SlovickoSnake sl = bookSnapshot.getValue(SlovickoSnake.class);
+                        if (sl != null) {
+                            String nazev = sl.nazev;
+                            String obrazek = sl.obrazek;
+                            Boolean jeToSlovicko = sl.jeToSlovicko;
+                            Bitmap b = convertStringToBitmap(obrazek);
+                            String itemKey = bookSnapshot.getKey();
+                            if(jeToSlovicko == true){
+                                source.add(sl);}
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("TAG", "Error reading data");
+                }
+            });
+
+
+        } else {
+            // User is not signed in
         }
-
 
     }
 
 
     public void AddItemsToRecyclerViewArrayList2() {
         source2 = new ArrayList<>();
-        File file = new File(getContext().getFilesDir(), "rozvrh.txt");
-        File file2 = new File(getContext().getFilesDir(), "aktivity.txt");
-        //Načte slovíčka ze souboru
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String yamlStr;
-            int p = 0;
-            while ((yamlStr = br.readLine()) != null) {
-                Yaml yaml = new Yaml();
-                SlovickoSnake slovicko = yaml.loadAs(yamlStr, SlovickoSnake.class);
+
+        //Načte slovíčka z databáze
+        mAuth = FirebaseAuth.getInstance();
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
 
 
-                //Přidá je do ArrayListu
-                source2.add(slovicko);
-                p++;
-            }
-        } catch (Exception e) {
-            System.out.println("Chyba při čtení ze souboru.");
+            kartickyRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot bookSnapshot : dataSnapshot.getChildren()) {
+                        SlovickoSnake sl = bookSnapshot.getValue(SlovickoSnake.class);
+                        if (sl != null) {
+                            String nazev = sl.nazev;
+                            String obrazek = sl.obrazek;
+                            Boolean jeToSlovicko = sl.jeToSlovicko;
+                            Bitmap b = convertStringToBitmap(obrazek);
+                            String itemKey = bookSnapshot.getKey();
+                            if(jeToSlovicko == true){
+                                source2.add(sl);}
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("TAG", "Error reading data");
+                }
+            });
+
+
+        } else {
+            // User is not signed in
         }
 
     }
@@ -333,6 +424,12 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
 
         }
     };
-
+    public static Bitmap convertStringToBitmap(String string) {
+        byte[] byteArray1;
+        byteArray1 = Base64.decode(string, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0,
+                byteArray1.length);
+        return bmp;
+    }
 
 }
