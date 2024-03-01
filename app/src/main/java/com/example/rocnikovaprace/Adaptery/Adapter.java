@@ -109,6 +109,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
             }
         });
 
+        if (!(list.get(position).cas == null)) {
+
+            Thread timeout = new Thread(new Runnable(){
+                public void run() {
+                    try {
+                        Thread.sleep(list.get(position).cas * 1000);
+                        holder.itemView.setVisibility(View.GONE);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            timeout.start();
+
+        }
+
 
     }
 

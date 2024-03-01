@@ -88,6 +88,7 @@ public class Aktivity extends Fragment {
 
             }
         };
+
         adapter = new Adapter(source, getContext(), inter);
 
         // Nastaví Horizontal Layout Manager pro Recycler view

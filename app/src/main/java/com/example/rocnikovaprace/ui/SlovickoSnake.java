@@ -9,6 +9,15 @@ public class SlovickoSnake implements Serializable {
     public Boolean jeToSlovicko;
     public String kategorie;
     public int poradi;
+    public Integer cas;
+
+    public Integer getCas() {
+        return cas;
+    }
+
+    public void setCas(Integer cas) {
+        this.cas = cas;
+    }
 
     public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie, int poradi) {
         this.nazev = nazev;
@@ -16,6 +25,11 @@ public class SlovickoSnake implements Serializable {
         this.jeToSlovicko = jeToSlovicko;
         this.kategorie = kategorie;
         this.poradi = poradi;
+        this.cas = null;
+    }
+    public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie, int poradi, Integer cas) {
+        this(nazev, obrazek, jeToSlovicko, kategorie, poradi);
+        this.cas = cas;
     }
 
     public String getNazev() {

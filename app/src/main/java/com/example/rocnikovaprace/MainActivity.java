@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         String kategorie = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
         String obrazek;
         String strRef ="";
-
+        EditText cislo = findViewById(R.id.cislo);
         //Vezme obrázek z tlačítka a převede ho do stringu
         BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
@@ -214,7 +214,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int poradi = 1;
-        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie , poradi);
+        Integer c  = Integer.valueOf( cislo.getText().toString());
+        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie, poradi, c);
         /*   //Udělá z objektu yaml
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);*/
