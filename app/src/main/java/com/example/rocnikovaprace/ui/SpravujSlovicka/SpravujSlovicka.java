@@ -242,7 +242,6 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
                             String nazev = sl.nazev;
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
-                            String kategorie = sl.kategorie;
                             Bitmap b = convertStringToBitmap(obrazek);
                             String itemKey = bookSnapshot.getKey();
                             if(jeToSlovicko == true){

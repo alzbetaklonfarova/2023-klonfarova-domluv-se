@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import android.graphics.Bitmap;
 
 import android.util.Base64;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.rocnikovaprace.databinding.ActivityMainBinding;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.VytvoreniHesla;
 import com.google.android.gms.tasks.Tasks;
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox aktivita = findViewById(R.id.Aktivita);
         String nazev = editText.getText().toString();
         boolean jeToSlovicko = true;
-        String kategorie = null;
+        String kategorie = ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString();
         String obrazek;
         String strRef ="";
 
@@ -212,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int poradi = 1;
-        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie, poradi);
+        SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie , poradi);
         /*   //Udělá z objektu yaml
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
         String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);*/

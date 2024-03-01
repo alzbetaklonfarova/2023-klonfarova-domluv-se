@@ -183,7 +183,6 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                             String nazev = sl.nazev;
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
-                            String kategorie = sl.kategorie;
                             Bitmap b = convertStringToBitmap(obrazek);
                             if(jeToSlovicko == true){
                             source.add(sl);}

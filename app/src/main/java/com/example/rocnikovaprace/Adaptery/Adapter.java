@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.SeznamKategorii;
 import com.example.rocnikovaprace.Slovicka;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.SpravujSlovicka.RecyclerViewClickInterface;
 
@@ -93,6 +96,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
         //Nastaví text a obrázek, každé položce v seznamu
         holder.textView.setText(list.get(position).nazev);
         holder.obrazek.setImageBitmap(convertStringToBitmap(list.get(position).obrazek));
+
+        Kategorie kategorie = SeznamKategorii.podleNazvu(list.get(position).kategorie);
+        if (kategorie != null) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor(kategorie.getBarva()));
+        }
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

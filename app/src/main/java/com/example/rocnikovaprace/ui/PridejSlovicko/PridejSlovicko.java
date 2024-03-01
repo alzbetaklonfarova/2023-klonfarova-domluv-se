@@ -12,8 +12,10 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,12 +26,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.rocnikovaprace.MainActivity;
 import com.example.rocnikovaprace.R;
+import com.example.rocnikovaprace.SeznamKategorii;
 import com.example.rocnikovaprace.databinding.FragmentSlideshowBinding;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PridejSlovicko extends Fragment {
 
@@ -103,6 +109,12 @@ public class PridejSlovicko extends Fragment {
 
         // Inicializuji imageView, ale protože je to v onCreateView musí ho najít view
         imageButton = root.findViewById(R.id.imageButton);
+
+        Spinner spinner = root.findViewById(R.id.spinner);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, SeznamKategorii.nazvy());
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+
 
         //Nastavím pozadí image View
         imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);

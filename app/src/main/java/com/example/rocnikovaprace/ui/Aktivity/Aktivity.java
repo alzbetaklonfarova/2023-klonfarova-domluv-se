@@ -136,7 +136,6 @@ public class Aktivity extends Fragment {
                             String nazev = sl.nazev;
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
-                            String kategorie = sl.kategorie;
                             Bitmap b = convertStringToBitmap(obrazek);
                             if(jeToSlovicko == false){
                                 source.add(sl);}
