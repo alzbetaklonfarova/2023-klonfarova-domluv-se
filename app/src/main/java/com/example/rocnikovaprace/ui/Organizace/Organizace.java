@@ -94,7 +94,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             int i = 0;
-            while (i < source.size()){
+            while (i < source2.size()){
 
                 String kartickaId = kartickyRef.push().getKey();
 
