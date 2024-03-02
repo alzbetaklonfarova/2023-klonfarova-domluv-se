@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rocnikovaprace.Casovac;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.SeznamKategorii;
 import com.example.rocnikovaprace.Slovicka;
@@ -32,6 +34,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
     RecyclerViewClickInterface recyclerViewClickInterface;
     Context context;
 
+    Casovac casovac;
+
+    private FragmentActivity activity;
+
     public static class MyView
             extends RecyclerView.ViewHolder {
 
@@ -43,7 +49,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
         // Konstruktor s paramentrem View
         public MyView(View view) {
             super(view);
-
 
             textView = (TextView) view
                     .findViewById(R.id.textview);
@@ -59,10 +64,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
     }
 
     //Další konstruktor
-    public Adapter(List<SlovickoSnake> horizontalList, Context context, RecyclerViewClickInterface recyclerViewClickInterface) {
+    public Adapter(FragmentActivity activity, List<SlovickoSnake> horizontalList, Context context, RecyclerViewClickInterface recyclerViewClickInterface) {
         this.list = horizontalList;
         this.context = context;
         this.recyclerViewClickInterface = recyclerViewClickInterface;
+        this.activity = activity;
+
     }
 
     // Metoda, která se stará o rozložení a vzhled jednotlivých položek v seznamu
@@ -110,19 +117,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
         });
 
         if (!(list.get(position).cas == null)) {
-
-            Thread timeout = new Thread(new Runnable(){
-                public void run() {
-                    try {
-                        Thread.sleep(list.get(position).cas * 1000);
-                        holder.itemView.setVisibility(View.GONE);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-            timeout.start();
-
+            nastavCasovac(list.get(position));
         }
 
 
@@ -134,5 +129,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
         return list.size();
     }
 
+    public List<SlovickoSnake> getList(){
+        return list;
+    }
 
+    public void nastavCasovac(SlovickoSnake polozka){
+        if (casovac == null) {
+            casovac = new Casovac(polozka, this);
+        }
+        else {
+            casovac.vlozCasovac(polozka);
+        }
+    }
+
+    public FragmentActivity getActivity() {
+        return activity;
+    }
 }

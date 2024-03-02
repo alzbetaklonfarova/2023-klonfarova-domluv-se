@@ -156,7 +156,7 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
 
             }
         };
-        adapter = new Adapter(source, getContext(), inter);
+        adapter = new Adapter(this.getActivity(), source, getContext(), inter);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
         HorizontalLayout

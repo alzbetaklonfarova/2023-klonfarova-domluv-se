@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rocnikovaprace.Adaptery.Adapter;
+import com.example.rocnikovaprace.Casovac;
 import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
@@ -52,6 +53,8 @@ public class Aktivity extends Fragment {
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     Adapter adapter;
     LinearLayoutManager HorizontalLayout;
+
+
 
     public static Aktivity newInstance() {
         return new Aktivity();
@@ -89,7 +92,7 @@ public class Aktivity extends Fragment {
             }
         };
 
-        adapter = new Adapter(source, getContext(), inter);
+        adapter = new Adapter(this.getActivity(), source, getContext(), inter);
 
         // Nastaví Horizontal Layout Manager pro Recycler view
         HorizontalLayout

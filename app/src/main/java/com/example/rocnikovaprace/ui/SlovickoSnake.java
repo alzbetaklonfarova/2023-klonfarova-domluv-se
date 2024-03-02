@@ -18,7 +18,6 @@ public class SlovickoSnake implements Serializable {
     public void setCas(Integer cas) {
         this.cas = cas;
     }
-
     public SlovickoSnake(String nazev, String obrazek, Boolean jeToSlovicko, String kategorie, int poradi) {
         this.nazev = nazev;
         this.obrazek = obrazek;
