@@ -214,7 +214,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int poradi = 1;
-        Integer c  = Integer.valueOf( cislo.getText().toString());
+        String cas = cislo.getText().toString();
+        Integer c = null;
+        if (cas != null) {
+            c = Integer.valueOf( cislo.getText().toString());
+        }
+
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie, poradi, c);
         /*   //Udělá z objektu yaml
         Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
