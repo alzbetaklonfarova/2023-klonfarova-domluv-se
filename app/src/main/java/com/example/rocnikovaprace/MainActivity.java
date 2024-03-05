@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-// Nastaví soubor podle toho, jestli je to slovicko neebo aktivita
+// Nastaví referenci podle toho, jestli je to slovicko neebo aktivita
         if (slovicko.isChecked() == true && aktivita.isChecked() == false) {
             jeToSlovicko = true;
             strRef = "karticky";
@@ -221,9 +221,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SlovickoSnake s = new SlovickoSnake(nazev, obrazek, jeToSlovicko, kategorie, poradi, c);
-        /*   //Udělá z objektu yaml
-        Yaml yaml1 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
-        String yamlStr = yaml1.dumpAs(s, Tag.MAP, null);*/
+
 
 //ukládá objekt, neboli slovíčko do Firebase databáze
 

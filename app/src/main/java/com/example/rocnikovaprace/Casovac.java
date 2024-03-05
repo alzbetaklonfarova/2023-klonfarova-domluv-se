@@ -1,8 +1,16 @@
 package com.example.rocnikovaprace;
 
+import android.util.Log;
+
 import com.example.rocnikovaprace.Adaptery.Adapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.Aktivity.Aktivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,6 +44,11 @@ public class Casovac implements Runnable {
             // odstranim polozku
             int pozice = parent.getList().indexOf(polozka);
             parent.getList().remove(polozka);
+
+            //Tady z databáze
+            deleteObject(polozka.getNazev());
+
+
             parent.getActivity().runOnUiThread( new Runnable(){
                 @Override
                 public void run() {
@@ -56,4 +69,30 @@ public class Casovac implements Runnable {
             vlakno.start();
         }
     }
+
+    private void deleteObject(String nazev) {
+        DatabaseReference kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        Query query = kartickyRef.orderByChild("nazev").equalTo(nazev);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot objectSnapshot : dataSnapshot.getChildren()) {
+                    objectSnapshot.getRef().removeValue()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Log.d("TAG", "Objekt úspěšně smazán z databáze");
+                                } else {
+                                    Log.e("TAG", "Nepodařilo se smazat objekt z databáze");
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Zde můžete obsloužit případ, kdy se operace nepodaří
+            }
+        });
+    }
+
 }

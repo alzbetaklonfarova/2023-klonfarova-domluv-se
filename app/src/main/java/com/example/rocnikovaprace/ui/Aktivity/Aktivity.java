@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.yaml.snakeyaml.Yaml;
@@ -54,7 +55,7 @@ public class Aktivity extends Fragment {
     Adapter adapter;
     LinearLayoutManager HorizontalLayout;
 
-
+private int q =0;
 
     public static Aktivity newInstance() {
         return new Aktivity();
@@ -110,6 +111,9 @@ public class Aktivity extends Fragment {
         // Nastaví adapter pro recycler view
         recyclerView.setAdapter(adapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         return view;
     }
@@ -144,8 +148,8 @@ public class Aktivity extends Fragment {
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             Bitmap b = convertStringToBitmap(obrazek);
-                            if(jeToSlovicko == false){
-                                source.add(sl);}
+                            // Možná FIX if(jeToSlovicko == false){source.add(sl);}
+                            source.add(sl);
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -172,6 +176,31 @@ public class Aktivity extends Fragment {
         return bmp;
     }
 
+    private void deleteObject(String nazev) {
+        Query query = kartickyRef.orderByChild("nazev").equalTo(nazev);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot objectSnapshot : dataSnapshot.getChildren()) {
+                    objectSnapshot.getRef().removeValue()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Log.d("TAG", "Objekt úspěšně smazán z databáze");
+                                } else {
+                                    Log.e("TAG", "Nepodařilo se smazat objekt z databáze");
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Zde můžete obsloužit případ, kdy se operace nepodaří
+            }
+        });
+    }
+
+
     //Umožňuje přesouvat položky v RecycleView
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
         @Override
@@ -184,6 +213,7 @@ public class Aktivity extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 //FIX: Někam sem musím přidat, aby položku smazal z databáze
             int position = viewHolder.getAdapterPosition();
+
             SlovickoSnake a = source.get(position);
             source.remove(position);
             recyclerView.getAdapter().notifyItemRemoved(position);
@@ -196,14 +226,16 @@ public class Aktivity extends Fragment {
                             source.add(position, a);
 
                             recyclerView.getAdapter().notifyItemInserted(position);
+                            q =1;
 
 
                         }
                     }).show();
-
+                  if (q==0){deleteObject(a.getNazev()); }else {q=0;}
 
         }
     };
+
 
 
 

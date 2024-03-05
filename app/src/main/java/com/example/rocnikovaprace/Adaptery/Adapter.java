@@ -116,7 +116,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyView> {
             }
         });
 
-        if (!(list.get(position).cas == null)) {
+        if (!(list.get(position).cas == null) && list.get(position).jeToSlovicko == false) {
             nastavCasovac(list.get(position));
         }
 
