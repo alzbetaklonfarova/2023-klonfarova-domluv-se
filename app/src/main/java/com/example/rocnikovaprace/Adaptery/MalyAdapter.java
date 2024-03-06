@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,8 @@ public class MalyAdapter extends RecyclerView.Adapter<Adapter.MyView> {
         Kategorie kategorie = SeznamKategorii.podleNazvu(list.get(position).kategorie);
         if (kategorie != null) {
             holder.cardView.setCardBackgroundColor(Color.parseColor(kategorie.getBarva()));
+            holder.cardView.setCardBackgroundColor(Color.parseColor(kategorie.getBarva()));
+            Log.d("Barva", "Barva pro pozici " + position + ": " + kategorie.getBarva());
         }
 
     }

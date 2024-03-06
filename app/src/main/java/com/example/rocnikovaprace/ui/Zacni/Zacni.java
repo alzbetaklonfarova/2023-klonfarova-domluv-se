@@ -21,6 +21,7 @@ import com.example.rocnikovaprace.ImageSaver;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.databinding.FragmentHomeBinding;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
+import com.example.rocnikovaprace.ui.Kategorie;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -184,6 +185,7 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             Bitmap b = convertStringToBitmap(obrazek);
+                            String kategorie = sl.kategorie;
                             if(jeToSlovicko == true){
                             source.add(sl);}
                         }
