@@ -80,8 +80,10 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     public void onDestroyView() {
         super.onDestroyView();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = user.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("rozvrh");
+        DatabaseReference reference = database.getReference(userID + "rozvrh");
 
         reference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -94,7 +96,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
             }
         });
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -207,24 +209,6 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                                 }
                             }
                         });
-
-
-
-                       /* String zeSouboru = "";
-                        File heslosoubor = new File(getContext().getFilesDir(), "heslo.txt");
-                        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
-                            zeSouboru = br.readLine();
-                        } catch (Exception e) {
-                            System.out.println("Chyba při čtení ze souboru.");
-                        }
-//Pokud je heslo špatné vrátí uživatele na domovskou obrazovku
-                        if (zeSouboru.equals(editText.getText().toString())) {
-                        } else {
-                            Intent i = new Intent(getContext(), MainActivity.class);
-                            startActivity(i);
-                        }*/
-
-
                     }
                 });
 
@@ -321,10 +305,11 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = user.getUid();
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "aktivity");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -364,10 +349,11 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
 
     public void AddItemsToRecyclerViewArrayList2() {
         source2 = new ArrayList<>();
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = user.getUid();
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {

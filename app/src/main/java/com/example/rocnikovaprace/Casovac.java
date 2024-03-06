@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.rocnikovaprace.Adaptery.Adapter;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
 import com.example.rocnikovaprace.ui.Aktivity.Aktivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,7 +73,9 @@ public class Casovac implements Runnable {
     }
 
     private void deleteObject(String nazev) {
-        DatabaseReference kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = user.getUid();
+        DatabaseReference kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
         Query query = kartickyRef.orderByChild("nazev").equalTo(nazev);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -227,11 +227,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference(strRef);
+
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+
+            String userID = currentUser.getUid();
+            kartickyRef = FirebaseDatabase.getInstance().getReference(userID + strRef);
             String kartickaId = kartickyRef.push().getKey();
 
 
@@ -252,12 +255,7 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
         aktivita.setChecked(false);
         slovicko.setChecked(false);
-
-
-        /*Yaml yaml2 = new Yaml(new Constructor(SlovickoSnake.class, new LoaderOptions()));
-        SlovickoSnake sl2 = yaml2.load(yamlStr);*/
-
-
+        cislo.setText("");
 
     }
 

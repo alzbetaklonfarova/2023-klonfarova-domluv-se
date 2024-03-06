@@ -165,10 +165,11 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userID = user.getUid();
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "karticky");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
