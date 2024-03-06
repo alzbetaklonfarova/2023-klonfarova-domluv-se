@@ -129,11 +129,10 @@ private int q =0;
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
+
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {

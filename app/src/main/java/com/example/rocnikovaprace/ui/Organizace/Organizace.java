@@ -80,10 +80,8 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     public void onDestroyView() {
         super.onDestroyView();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference(userID + "rozvrh");
+        DatabaseReference reference = database.getReference("rozvrh");
 
         reference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -96,7 +94,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
             }
         });
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -209,6 +207,24 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                                 }
                             }
                         });
+
+
+
+                       /* String zeSouboru = "";
+                        File heslosoubor = new File(getContext().getFilesDir(), "heslo.txt");
+                        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
+                            zeSouboru = br.readLine();
+                        } catch (Exception e) {
+                            System.out.println("Chyba při čtení ze souboru.");
+                        }
+//Pokud je heslo špatné vrátí uživatele na domovskou obrazovku
+                        if (zeSouboru.equals(editText.getText().toString())) {
+                        } else {
+                            Intent i = new Intent(getContext(), MainActivity.class);
+                            startActivity(i);
+                        }*/
+
+
                     }
                 });
 
@@ -305,11 +321,10 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
+
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "aktivity");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("aktivity");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -326,8 +341,8 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             Bitmap b = convertStringToBitmap(obrazek);
                             String itemKey = bookSnapshot.getKey();
-                            if(jeToSlovicko == true){
-                                source.add(sl);}
+                            //if(jeToSlovicko == false){source.add(sl);}
+                            source.add(sl);
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -349,11 +364,10 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
 
     public void AddItemsToRecyclerViewArrayList2() {
         source2 = new ArrayList<>();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
+
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -374,7 +388,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                             source2.add(sl);
                         }
                     }
-                    adapter.notifyDataSetChanged();
+                    adapter2.notifyDataSetChanged();
                 }
 
                 @Override

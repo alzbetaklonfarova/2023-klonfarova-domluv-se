@@ -200,10 +200,8 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference(userID + "karticky");
+        DatabaseReference reference = database.getReference("karticky");
 
         reference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -216,7 +214,7 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
             }
         });
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference(userID + "karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -247,11 +245,10 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
     //Přidá položky do seznamu
     public void AddItemsToRecyclerViewArrayList() {
         source = new ArrayList<>();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userID = user.getUid();
+
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference( userID + "karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
