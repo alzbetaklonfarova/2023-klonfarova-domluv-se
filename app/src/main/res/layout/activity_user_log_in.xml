@@ -9,62 +9,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/DomluvSe"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/DomluvSe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:text="Domluv se!"
+                android:textSize="50dp"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Email" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Password" />
+
+            <Button
+                android:id="@+id/signInUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Přihlásit se" />
+
+            <TextView
+                android:id="@+id/zapomenuteHeslo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Zapomenuté heslo?" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="37dp"
-            android:baselineAligned="false"
-            android:text="Domluv se!"
-            android:textSize="50dp"
-            android:textAlignment="center"/>
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:ems="10"
-            android:hint="Email" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="37dp"
-            android:ems="10"
-            android:hint="Password" />
-
-
-        <Button
-            android:id="@+id/signInUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:text="Přihlásit se" />
-
-        <TextView
-            android:id="@+id/zapomenuteHeslo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Zapomenuté heslo?" />
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            tools:ignore="MisssingConstraints"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        tools:ignore="MisssingConstraints"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
