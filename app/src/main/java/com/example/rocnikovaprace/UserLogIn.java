@@ -109,6 +109,7 @@ public class UserLogIn extends AppCompatActivity implements View.OnClickListener
         }
 
         progressBar.setVisibility(View.VISIBLE);
+
         // Přihlásí uživatele pomocí Firebase
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

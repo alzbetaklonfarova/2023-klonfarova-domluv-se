@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +28,12 @@ import com.example.rocnikovaprace.Adaptery.MalyAdapter;
 import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.Adaptery.StredniAdapter;
+import com.example.rocnikovaprace.UserLogIn;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -181,7 +187,30 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                                 = customLayout
                                 .findViewById(
                                         R.id.dialogoveheslo);
-                        String zeSouboru = "";
+                        String email ="";
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            email = user.getEmail();
+                            // nyní mám e-mail uživatele
+                        }
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, editText.getText().toString());
+
+                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    //Toast.makeText(getContext(), "Heslo je správné", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Heslo je nesprávné", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getContext(), MainActivity.class);
+                                    startActivity(i);
+                                }
+                            }
+                        });
+
+
+
+                       /* String zeSouboru = "";
                         File heslosoubor = new File(getContext().getFilesDir(), "heslo.txt");
                         try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
                             zeSouboru = br.readLine();
@@ -193,7 +222,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                         } else {
                             Intent i = new Intent(getContext(), MainActivity.class);
                             startActivity(i);
-                        }
+                        }*/
 
 
                     }

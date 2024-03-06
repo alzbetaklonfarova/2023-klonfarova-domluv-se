@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -32,7 +33,11 @@ import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.Slovicka;
 import com.example.rocnikovaprace.databinding.FragmentGalleryBinding;
 import com.example.rocnikovaprace.ui.SlovickoSnake;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -111,19 +116,27 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
                                 = customLayout
                                 .findViewById(
                                         R.id.dialogoveheslo);
-                        String zeSouboru = "";
-                        File heslosoubor = new File(getContext().getFilesDir(), "heslo.txt");
-                        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
-                            zeSouboru = br.readLine();
-                        } catch (Exception e) {
-                            System.out.println("Chyba při čtení ze souboru.");
+                        String email ="";
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            email = user.getEmail();
+                            // nyní mám e-mail uživatele
                         }
-//Pokud je heslo špatné vrátí uživatele na domovskou obrazovku
-                        if (zeSouboru.equals(editText.getText().toString())) {
-                        } else {
-                            Intent i = new Intent(getContext(), MainActivity.class);
-                            startActivity(i);
-                        }
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, editText.getText().toString());
+
+                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    //Toast.makeText(getContext(), "Heslo je správné", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Heslo je nesprávné", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getContext(), MainActivity.class);
+                                    startActivity(i);
+                                }
+                            }
+                        });
+
 
 
                     }

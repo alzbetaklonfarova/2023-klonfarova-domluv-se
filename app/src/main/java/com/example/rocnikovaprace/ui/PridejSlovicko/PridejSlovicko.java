@@ -29,6 +29,12 @@ import com.example.rocnikovaprace.R;
 import com.example.rocnikovaprace.SeznamKategorii;
 import com.example.rocnikovaprace.databinding.FragmentSlideshowBinding;
 import com.example.rocnikovaprace.ui.Kategorie;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.BufferedReader;
@@ -85,19 +91,27 @@ public class PridejSlovicko extends Fragment {
                                 = customLayout
                                 .findViewById(
                                         R.id.dialogoveheslo);
-                        String zeSouboru = "";
-                        File heslosoubor = new File(getContext().getFilesDir(), "heslo.txt");
-                        try (BufferedReader br = new BufferedReader(new FileReader(heslosoubor))) {
-                            zeSouboru = br.readLine();
-                        } catch (Exception e) {
-                            System.out.println("Chyba při čtení ze souboru.");
+                        String email ="";
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            email = user.getEmail();
+                            // nyní mám e-mail uživatele
                         }
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, editText.getText().toString());
 
-                        if (zeSouboru.equals(editText.getText().toString())) {
-                        } else {
-                            Intent i = new Intent(getContext(), MainActivity.class);
-                            startActivity(i);
-                        }
+                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    //Toast.makeText(getContext(), "Heslo je správné", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Heslo je nesprávné", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getContext(), MainActivity.class);
+                                    startActivity(i);
+                                }
+                            }
+                        });
+
 
 
                     }
