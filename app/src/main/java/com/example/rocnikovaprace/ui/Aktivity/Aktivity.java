@@ -211,7 +211,7 @@ private int q =0;
         //Po přetáhnutí nahoru, nebo dolu smaže položku ze seznamu
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//FIX: Někam sem musím přidat, aby položku smazal z databáze
+
             int position = viewHolder.getAdapterPosition();
 
             SlovickoSnake a = source.get(position);

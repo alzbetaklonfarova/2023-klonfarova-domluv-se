@@ -29,7 +29,7 @@ public abstract class SeznamKategorii {
     public static Kategorie podleNazvu(String nazev) {
         // vyfiltrovat ze seznamu vsech kategorii tu, ktera ma stejny nazev jako pozadovana
         return seznam.stream()
-                .filter(k -> k.nazev == nazev)
+                .filter(k -> k.nazev.equals(nazev))
                 .findFirst()  // v seznamu by mel byt nazev pouze jednou, proto bereme prvni
                 .orElse(null);  // pokud neni nalezen, vracime null
     }
