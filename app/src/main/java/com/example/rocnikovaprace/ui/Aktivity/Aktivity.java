@@ -55,7 +55,7 @@ public class Aktivity extends Fragment {
     Adapter adapter;
     LinearLayoutManager HorizontalLayout;
 
-private int q =0;
+    private int q = 0;
 
     public static Aktivity newInstance() {
         return new Aktivity();
@@ -148,7 +148,7 @@ private int q =0;
                             String obrazek = sl.obrazek;
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             Bitmap b = convertStringToBitmap(obrazek);
-                            // Možná FIX if(jeToSlovicko == false){source.add(sl);}
+                            // Možná if(jeToSlovicko == false){source.add(sl);}
                             source.add(sl);
                         }
                     }
@@ -168,6 +168,7 @@ private int q =0;
 
 
     }
+
     public static Bitmap convertStringToBitmap(String string) {
         byte[] byteArray1;
         byteArray1 = Base64.decode(string, Base64.DEFAULT);
@@ -195,7 +196,7 @@ private int q =0;
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Zde můžete obsloužit případ, kdy se operace nepodaří
+                // Zde mohu obsloužit případ, kdy se operace nepodaří
             }
         });
     }
@@ -222,21 +223,18 @@ private int q =0;
                     .setAction(getString(R.string.zpet), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            //File file = new File(getContext().getFilesDir(), "slovicka.txt");
                             source.add(position, a);
-
                             recyclerView.getAdapter().notifyItemInserted(position);
-                            q =1;
-
-
+                            q = 1;
                         }
                     }).show();
-                  if (q==0){deleteObject(a.getNazev()); }else {q=0;}
-
+            if (q == 0) {
+                deleteObject(a.getNazev());
+            } else {
+                q = 0;
+            }
         }
     };
-
-
 
 
 }

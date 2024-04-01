@@ -28,25 +28,12 @@
                 android:textAlignment="center"/>
 
             <EditText
-                android:id="@+id/fullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Full name" />
-
-            <EditText
-                android:id="@+id/age"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Age" />
-
-            <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Password" />
+                android:hint="Heslo"
+                android:inputType="textPassword"/>
 
             <EditText
                 android:id="@+id/email"
@@ -64,7 +51,7 @@
                 android:id="@+id/registerUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register" />
+                android:text="Registrovat" />
 
         </LinearLayout>
 

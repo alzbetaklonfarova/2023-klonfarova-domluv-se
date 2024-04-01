@@ -384,7 +384,7 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
                             Boolean jeToSlovicko = sl.jeToSlovicko;
                             Bitmap b = convertStringToBitmap(obrazek);
                             String itemKey = bookSnapshot.getKey();
-                            //mozna FIX if(jeToSlovicko == true){source2.add(sl);}
+                            //mozna  if(jeToSlovicko == true){source2.add(sl);}
                             source2.add(sl);
                         }
                     }

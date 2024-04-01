@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
         slovicko.setChecked(false);
         cislo.setText("");
 
+
     }
 
 
