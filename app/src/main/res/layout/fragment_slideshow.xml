@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/slovo"
+                android:hint="Čas vteřiny"
                 android:inputType="number"
                 app:layout_constraintBottom_toTopOf="@+id/Ulozit"
                 app:layout_constraintEnd_toEndOf="@+id/Slovo"

@@ -81,7 +81,8 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         super.onDestroyView();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("rozvrh");
+        DatabaseReference reference = database.getReference("users").child(mAuth.getCurrentUser().getUid())
+                .child("rozvrh");
 
         reference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -94,11 +95,20 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
             }
         });
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+
+
+        //kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
         if (currentUser != null) {
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("rozvrh");
+
+
+
             int i = 0;
             while (i < source2.size()){
 
@@ -120,38 +130,6 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
         }
 
 
-       /* File file = new File(getContext().getFilesDir(), "rozvrh.txt");
-        if (source2.size() > 0) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
-                SlovickoSnake s = new SlovickoSnake(source2.get(0).getNazev(), source2.get(0).getObrazek(), source2.get(0).getJeToSlovicko(), source2.get(0).getKategorie());
-                Yaml yaml = new Yaml();
-                yamlStr = yaml.dump(s);
-                bw.write(yamlStr);
-                bw.newLine();
-                bw.flush();
-                source2.remove(0);
-
-
-            } catch (Exception e) {
-                System.out.println("Do souboru se nepovedlo zapsat.");
-            }
-
-        }
-        while (0 < source2.size()) {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
-                SlovickoSnake s = new SlovickoSnake(source2.get(0).getNazev(), source2.get(0).getObrazek(), source2.get(0).getJeToSlovicko(), source2.get(0).getKategorie());
-                Yaml yaml = new Yaml();
-                yamlStr = yaml.dump(s);
-                bw.write(yamlStr);
-                bw.newLine();
-                bw.flush();
-                source2.remove(0);
-
-
-            } catch (Exception e) {
-                System.out.println("Do souboru se nepovedlo zapsat.");
-            }
-        }*/
     }
 
 
@@ -324,11 +302,12 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("aktivity");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("aktivity");
 
             kartickyRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -367,11 +346,12 @@ public class Organizace extends Fragment implements MalyAdapter.onNoteListener {
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("rozvrh");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("rozvrh");
 
             kartickyRef.addValueEventListener(new ValueEventListener() {
                 @Override

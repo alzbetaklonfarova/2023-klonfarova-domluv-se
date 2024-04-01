@@ -201,7 +201,8 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
     public void onDestroyView() {
         super.onDestroyView();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("karticky");
+        DatabaseReference reference = database.getReference("users").child(mAuth.getCurrentUser().getUid())
+                .child("karticky");
 
         reference.removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -214,11 +215,14 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
             }
         });
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("karticky");
+
             int i = 0;
             while (i < source.size()){
 
@@ -248,11 +252,12 @@ public class SpravujSlovicka extends Fragment implements Adapter.onNoteListener 
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("karticky");
 
             kartickyRef.addValueEventListener(new ValueEventListener() {
                 @Override

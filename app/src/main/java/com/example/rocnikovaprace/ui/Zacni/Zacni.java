@@ -169,12 +169,13 @@ public class Zacni extends Fragment implements MalyAdapter.onNoteListener {
 
         //Načte slovíčka z databáze
         mAuth = FirebaseAuth.getInstance();
-        kartickyRef = FirebaseDatabase.getInstance().getReference("karticky");
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
 
-
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child("karticky");
             kartickyRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

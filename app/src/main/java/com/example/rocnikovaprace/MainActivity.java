@@ -227,11 +227,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        kartickyRef = FirebaseDatabase.getInstance().getReference(strRef);
+        kartickyRef = FirebaseDatabase.getInstance().getReference("users");
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+
+            kartickyRef = kartickyRef.child(currentUser.getUid())
+                    .child(strRef);
+
             String kartickaId = kartickyRef.push().getKey();
 
 
