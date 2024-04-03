@@ -257,7 +257,8 @@ public class MainActivity extends AppCompatActivity {
         aktivita.setChecked(false);
         slovicko.setChecked(false);
         cislo.setText("");
-
+        imageButton.setBackgroundResource(R.drawable.kliknutimvloziteobrazek);
+        imageButton.setImageResource(R.drawable.kliknutimvloziteobrazek);
 
     }
 
